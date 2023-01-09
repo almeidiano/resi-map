@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.min.css" integrity="sha512-HbPh+j4V7pXprvQMt2dtmK/zCEsUeZWYXRln4sOwmoyHPQAPqy/k9lIquKUyKNpNbDGAY06UdiDHcEkBc72yCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); 
+
+        :root{
+            --primary-white: #e8e6e3;
+            --secondary-white: #D2D4DA;
+        }
+
+        .high-emphasis{
+            opacity: 87% !important;
+        }
+
+        h1,h2,h3,h4,h5{
+            margin: 0;
+            padding: 0;
+            color: var(--primary-white);
+        }
+        .buildingCategory span{
+            color: var(--secondary-white);
+        }
+
+        body { margin: 0; font-family: 'Poppins', sans-serif; }
+        canvas{width: 100%; height: 100%;}
+        .label {
+            border: 1px solid #FFF;
+            height: 16px;
+            width: 16px;
+            border-radius: 100%;
+            transition: .3s ease;
+            display: block;
+		}
+        .label:after{
+            content: '';
+            background-color: #FFF;
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            border-radius: 100%;
+            top: 3px;
+            left: 3px;
+            transition: .3s ease;
+            cursor: pointer;
+        }
+        .label:hover{
+            border: 1px solid aquamarine;
+        }
+        .label:hover::after{
+            background-color: aquamarine;
+        }
+        .sidebar{
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            height: 100%;
+            width: 50px;
+            z-index: 999;
+        }
+        .blockInfoSidebar {
+            background-color: #1B1C1E;
+            width: 0px;
+            height: 100%;
+            position: absolute;
+            right: 0;
+            overflow: hidden;
+        }
+        .main-logo{
+            padding: 10px 0px;
+            display: flex;
+            justify-content: center;
+        }
+        .container{
+            width: 90%;
+            margin: auto;
+            padding: 20px 0px;
+        }
+        .blockInfo p{
+            font-size: 14px;
+            color: var(--secondary-white);
+        }
+        .blockInfo{
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="https://samuelalmeidadev.com.br/portfolio" target="_blank" class="main-logo"><img src="https://samuelalmeidadev.com.br/portfolio/assets/img/main-logo.svg" height="35" /></a>
+    </div>
+    <div class="blockInfoSidebar">
+        <div class="container">
+            <div class="blockInfo">
+                <div class="blockTitle"><h1 class="blockName high-emphasis"></h1></div>
+                <div class="buildingCategory high-emphasis"><span></span></div>
+                <hr style="opacity: 0.07;"/>
+                <p class="high-emphasis"></p>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="dist/main.js"></script>
+</body>
+</html>
