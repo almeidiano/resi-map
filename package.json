@@ -1,7 +1,7 @@
 {
   "name": "map_resi",
   "version": "1.0.0",
-  "description": "A 3D map of Residencial Primavera",
+  "description": "Explore the Residencial Primavera 1 through an interactive map",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js"
