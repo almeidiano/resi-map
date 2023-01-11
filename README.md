@@ -9,7 +9,7 @@
 To install this project, simple clone it 
 
 ```
-git clone https://github.com/almeidiano/ResiMap
+git clone https://github.com/almeidiano/resi-map
 ```
 
 Then, install the dependencies 
