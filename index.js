@@ -49,7 +49,6 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
 
 } );
 
-    var buildingLabel;
     var buildingList = [];
     var buildingObj = {};
 
