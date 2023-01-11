@@ -1,6 +1,6 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { AmbientLight, LoadingManager, PerspectiveCamera, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
+import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import gsap from 'gsap';
 import tippy from 'tippy.js';
@@ -21,11 +21,7 @@ const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-camera.position.set(0, 0, 1);
-
-// light.position.x = 1.096;
-// light.position.y = 1.000;
-// light.position.z = -3.000;
+camera.position.set(0, 0, 1.2700000000000002);
 
 light.intensity = 1.50;
 scene.add(light);
@@ -34,9 +30,7 @@ const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
 loader.load( 'resi_complete.gltf', function ( gltf ) {
-
-    let blockException = ['Quadra', 'Willa2', 'Campinho', 'CaixaAgua', 'Areinha'];
-
+    scene.background = new Color( 0x71BCE1 );
     scene.add( gltf.scene );
 
     gltf.scene.position.x = -2.99999999999998;
@@ -48,63 +42,6 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
     gltf.scene.quaternion._y = -0.5130005247426389;
     gltf.scene.quaternion._z = -0.5665943748293979;
 
-    gltf.scene.rotation._x = 1.6600000000000013;
-    gltf.scene.rotation._y = -1.7400000000000013;
-    gltf.scene.rotation._z = 0;
-
-        document.addEventListener('keydown', (event) => {
-            var code = event.code;
-        
-            switch (code) {
-                // pos
-                case 'ArrowUp':
-                    camera.position.y += 0.01;
-                break;
-                case 'ArrowDown':
-                    camera.position.y -= 0.01;
-                break;
-                case 'ArrowLeft':
-                    camera.position.x -= 0.01;
-                break;
-                case 'ArrowRight':
-                    camera.position.x += 0.01;
-                break;
-                case 'KeyW':
-                    camera.position.z += 0.01;
-                break;
-                case 'KeyS':
-                    camera.position.z -= 0.01;
-                break;
-                case 'KeyH':
-                    camera.position.set(0,0,1);
-                    camera.rotation.set(0,0,0);
-                    gsap.to('.blockInfoSidebar', {width: '0px'})
-                break;
-                // rotation
-        
-                case 'Numpad8':
-                    camera.rotation.x += 0.01;
-                break;
-                case 'Numpad2':
-                    camera.rotation.x -= 0.01;
-                break;
-                case 'Numpad4':
-                    camera.rotation.y += 0.01;
-                break;
-                case 'Numpad6':
-                    camera.rotation.y -= 0.01;
-                break;
-                case 'Numpad1':
-                    camera.rotation.z += 0.01;
-                break;
-                case 'Numpad3':
-                    camera.rotation.z -= 0.01;
-                break;
-            }
-        
-            console.log(camera);
-        }, false);
-
 }, undefined, function ( error ) {
 
 	console.error( error );
@@ -115,12 +52,12 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
     const allBuildings = [
         {camPositionX: -0.24000000000000005, camPositionY: -1.500000000000001, camPositionZ: -0.9100000000000014, camRotationX: 0.5400000000000003, camRotationY: 0.4600000000000002, camRotationZ: 0.6500000000000004, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'A', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.19000000000000006, y: -0.5800000000000003},
         {camPositionX: 0.02000000000000008, camPositionY: -1.2999999999999998, camPositionZ: -0.91, camRotationX: 0.54, camRotationY: 0.46, camRotationZ: 0.65, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'B', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.07000000000000003, y: -0.4900000000000002},
-        {camPositionX: -0.9100000000000006, camPositionY: -1.2799999999999998, camPositionZ: -0.9500000000000001, camRotationX: 0.54, camRotationY: -0.5400000000000006, camRotationZ: -0.7400000000000009, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'C', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.2400000000000001, y: -0.4900000000000002},
+        {camPositionX: -0.9100000000000006, camPositionY: -1.2799999999999998, camPositionZ: -0.9500000000000001, camRotationX: 0.54, camRotationY: -0.5400000000000006, camRotationZ: -0.7400000000000009, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'C', category: 'Bloco', desc: 'Prédio onde morei por pouco tempo após eu ter nascido.', x: -0.2400000000000001, y: -0.4900000000000002},
         {camPositionX: 0.020000000000000004, camPositionY: -0.7899999999999999, camPositionZ: -1.03, camRotationX: 0.64, camRotationY: -0.4200000000000002, camRotationZ: -0.6000000000000003, camDurationPosition: 1.5, camDurationRotation: 2, isBuilding: true, name: 'D', category: 'Bloco', desc: 'Apenas um prédio comum.', x: 0.12999999999999995, y: -0.25},
         {camPositionX: -0.16, camPositionY: -0.85, camPositionZ: -0.94, camRotationX: 0.64, camRotationY: 0.019999999999999997, camRotationZ: 0.02, camDurationPosition: 1.5, camDurationRotation: 2, isBuilding: true, name: 'E', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.040000000000000036, y: -0.25},
         {camPositionX: -0.24999999999999956, camPositionY: -0.7300000000000002, camPositionZ: -0.9500000000000001, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'F', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.21000000000000008, y: -0.25},
-        {camPositionX: 0.6300000000000003, camPositionY: -0.48, camPositionZ: -0.97, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'G', category: 'Bloco', desc: 'Apenas um prédio comum.', x: 0.18, y: -0.15999999999999992},
-        {camPositionX: 0.2400000000000001, camPositionY: -0.48, camPositionZ: -0.97, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'H', category: 'Bloco', desc: 'Apenas um prédio comum.', x: 0.009999999999999969, y: -0.15999999999999992},
+        {camPositionX: 0.6300000000000003, camPositionY: -0.48, camPositionZ: -0.97, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'G', category: 'Bloco', desc: 'Prédio onde eu moro.', x: 0.18, y: -0.15999999999999992},
+        {camPositionX: 0.2400000000000001, camPositionY: -0.48, camPositionZ: -0.97, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'H', category: 'Bloco', desc: 'Prédio onde moram os dois caras mais legais do Residencial.', x: 0.009999999999999969, y: -0.15999999999999992},
         {camPositionX: -0.17999999999999994, camPositionY: -0.47999999999999976, camPositionZ: -0.97, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'I', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.16000000000000003, y: -0.15999999999999992},
         {camPositionX: -1.1400000000000003, camPositionY: -0.5100000000000001, camPositionZ: -0.9400000000000001, camRotationX: 0.5, camRotationY: -0.6300000000000007, camRotationZ:  -0.8900000000000011, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'J', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.3300000000000002, y: -0.15999999999999992},
         {camPositionX: 1.0700000000000007, camPositionY: -0.23999999999999977, camPositionZ: -0.97, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'L', category: 'Bloco', desc: 'Apenas um prédio comum.', x: 0.3900000000000002, y: -0.06999999999999992},
@@ -138,9 +75,9 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         {camPositionX: -0.02, camPositionY: 0.8099999999999999, camPositionZ: -0.89, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'X', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.10000000000000002, y: 0.4300000000000003},
         {camPositionX: -0.42999999999999994, camPositionY: 0.8200000000000003, camPositionZ: -0.89, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'Y', category: 'Bloco', desc: 'Apenas um prédio comum.', x: -0.29000000000000015, y: 0.4300000000000003},
         {camPositionX: 0.6799999999999998, camPositionY: 1.0800000000000003, camPositionZ: -0.89, camRotationX: 0.5, camRotationY: 0.51, camRotationZ: 0.74, camDurationPosition: 2, camDurationRotation: 2, isBuilding: true, name: 'Z', category: 'Bloco', desc: 'Apenas um prédio comum.', x: 0.25000000000000006, y: 0.5400000000000004},
-        {camPositionX: 0.6600000000000004, camPositionY: 0.28000000000000014, camPositionZ: -0.9900000000000014, camRotationX: -6.071532165918825e-17, camRotationY: -0.5600000000000003, camRotationZ: -1.5500000000000012, camDurationPosition: 2, camDurationRotation: 2, isBuilding: false, name: 'Salão de festas', category: 'construção', desc: 'Apenas um prédio comum.', x: 0.4200000000000002, y: 0.07000000000000009},
-        {camPositionX: 0.25000000000000105, camPositionY: -0.6300000000000001, camPositionZ: -1, camRotationX: 0.5, camRotationY: -0.63, camRotationZ: -0.89, camDurationPosition: 2, camDurationRotation: 2, isBuilding: false, name: 'Área do Willa', category: 'construção', desc: 'Apenas um prédio comum.', x: 0.26000000000000006, y: -0.19999999999999996},
-        {camPositionX: -0.7000000000000004, camPositionY: -1.1900000000000008, camPositionZ: -0.8700000000000013, camRotationX: -0.07000000000000006, camRotationY: 0.5400000000000003, camRotationZ: 1.8600000000000014, camDurationPosition: 2, camDurationRotation: 2, isBuilding: false, name: "Caixa d’água", category: 'construção', desc: 'Apenas um prédio comum.', x: -0.3800000000000002, y: -0.6500000000000004},
+        {camPositionX: 0.6600000000000004, camPositionY: 0.28000000000000014, camPositionZ: -0.9900000000000014, camRotationX: -6.071532165918825e-17, camRotationY: -0.5600000000000003, camRotationZ: -1.5500000000000012, camDurationPosition: 2, camDurationRotation: 2, isBuilding: false, name: 'Salão de festas', category: 'construção', desc: 'Recém-reformado, o salão de festas é um local feito para os condômicos para eventuais festas, reuniões e assembléias. <br/><br/> Nesse salão, há dois quartinhos, duas salas com acessórios para os participantes usarem, a área do salão em si, e uma área livre onde há um muro que divide o condomínio e a área da Força Áerea.', x: 0.4200000000000002, y: 0.07000000000000009},
+        {camPositionX: 0.25000000000000105, camPositionY: -0.6300000000000001, camPositionZ: -1, camRotationX: 0.5, camRotationY: -0.63, camRotationZ: -0.89, camDurationPosition: 2, camDurationRotation: 2, isBuilding: false, name: 'Área do Willa', category: 'construção', desc: 'Área do condomínio onde Willames reside. Até hoje, não se sabe o motivo dele estar ai, há especulações de que Willames trabalhou bastante no condomínio, tanto que esta área foi dada como "pagamento" para ele. <br/><br/> Trata-se de uma área onde há dois quartinhos, um banheiro e a área livre em si, que é precária.', x: 0.26000000000000006, y: -0.19999999999999996},
+        {camPositionX: -0.7000000000000004, camPositionY: -1.1900000000000008, camPositionZ: -0.8700000000000013, camRotationX: -0.07000000000000006, camRotationY: 0.5400000000000003, camRotationZ: 1.8600000000000014, camDurationPosition: 2, camDurationRotation: 2, isBuilding: false, name: "Caixa d’água", category: 'construção', desc: "Por muito tempo, a Caixa d'água foi um local escuro e descuidado, lembrado apenas para manutenções. <br/><br/> Contudo, por conta dos esforços dos moradores perto desta região, a Caixa d'água atualmente encontra-se reformada, tendo novos locais e melhorias, tais como: estacionamento, iluminação, decorações, plantações e até câmeras de segurança.", x: -0.3800000000000002, y: -0.6500000000000004},
         {camPositionX: 0.20000000000000004, camPositionY:  0.4700000000000003, camPositionZ: -0.9000000000000014, camRotationX: 0.5499999999999999, camRotationY: 0, camRotationZ: 0, camDurationPosition: 1.5, camDurationRotation: 1.5, isBuilding: false, name: 'Quadra', category: 'construção', desc: 'Apenas um prédio comum.', x: 0.08999999999999997, y: 0.31000000000000016}
     ];
 
@@ -180,7 +117,39 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
     labelRenderer.setSize(window.innerWidth, window.innerHeight);
     labelRenderer.domElement.style.position = "absolute";
     labelRenderer.domElement.style.top = "0px";
+    labelRenderer.domElement.style.opacity = 0;
     document.body.appendChild(labelRenderer.domElement);
+
+    manager.onLoad = function ( ) {
+        setTimeout(() => {
+            document.querySelector('.progress-area').style.display = 'none';
+            document.querySelector('.sidebar').style.display = 'block';
+            gsap.to('canvas', {opacity: 1, duration: 2, ease: "power3.out"});
+            gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area button', {opacity: 1, duration: 1})}})}});
+        }, 1000);
+    
+        document.querySelector('.begin-area button').addEventListener('click', function() {
+            document.querySelector('.begin-area').style.opacity = 0;
+            document.querySelector('.begin-area').style.zIndex = 0;
+            document.querySelector('.ion').style.opacity = "100%";
+            document.querySelector('.ion').style.pointerEvents = 'all';
+            gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
+            gsap.to('canvas', {filter: "blur(0px)", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1, duration: 1})}});
+
+            document.querySelector('.ion').addEventListener('click', () => {
+                closeSidebar();
+                gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
+                gsap.to(camera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
+            })
+        })  
+    };
+    
+    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+        let progressValue = document.querySelector('.progress-value');  
+        const loadedItems = itemsLoaded/itemsTotal * 100;
+
+        progressValue.style.width = `${loadedItems}%`;
+    };
 
     function animate() {
         window.requestAnimationFrame(animate);
@@ -207,8 +176,12 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         }
 
         document.querySelector('.buildingCategory span').innerText = buildingCategory;
-        document.querySelector('.blockInfo p').innerText = buildingDesc;
+        document.querySelector('.blockInfo p').innerHTML = buildingDesc;
         gsap.to('.blockInfoSidebar', {width: '350px'})
+    }
+
+    function closeSidebar() {
+        gsap.to('.blockInfoSidebar', {width: '0px'})
     }
 
     function onMouseClick(block) {
@@ -216,6 +189,7 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         let buildingTarget = block.target.getAttribute('name');
 
         if (buildingTarget) {
+            gsap.to(labelRenderer.domElement, {opacity: 0});
             let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget))
 
             if(buildingInfo) {
@@ -224,6 +198,7 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
             }
 
         }else if(blockTarget) {
+            gsap.to(labelRenderer.domElement, {opacity: 0});
             let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
 
             if(buildingInfo) {

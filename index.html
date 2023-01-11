@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Resi Map</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.min.css" integrity="sha512-HbPh+j4V7pXprvQMt2dtmK/zCEsUeZWYXRln4sOwmoyHPQAPqy/k9lIquKUyKNpNbDGAY06UdiDHcEkBc72yCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); 
@@ -12,6 +12,7 @@
         :root{
             --primary-white: #e8e6e3;
             --secondary-white: #D2D4DA;
+            --primary-purple: #5b467d;
         }
 
         .high-emphasis{
@@ -61,14 +62,15 @@
             height: 100%;
             width: 50px;
             z-index: 999;
+            display: none;
         }
         .blockInfoSidebar {
-            background-color: #1B1C1E;
             width: 0px;
             height: 100%;
             position: absolute;
             right: 0;
             overflow: hidden;
+            z-index: 9;
         }
         .main-logo{
             padding: 10px 0px;
@@ -83,15 +85,103 @@
         .blockInfo p{
             font-size: 14px;
             color: var(--secondary-white);
+            white-space: normal;
+            width: 315px;
         }
         .blockInfo{
             white-space: nowrap;
         }
+        html{
+            background-color: #181a1b !important;
+        }
+        .progress-area,
+        .blockInfoSidebar{
+            background: linear-gradient(225deg, rgba(60,42,84,255) 0%, #1d1328 100%);
+        }
+        .progress-area,
+        .begin-area{
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .begin-area{
+            z-index: 999;
+        }
+        .title-discover{
+            font-weight: bold;
+            color: var(--primary-purple);
+        }
+        .main-title h1{
+            font-size: xxx-large;
+        }
+        .title-discover,
+        .main-title h1{
+            transform: translateY(15px);
+            opacity: 0;
+        }
+        .button-area{
+            margin-top: 20px;
+        }
+        .begin-area button{
+            height: 40px;
+            width: 110px;
+            background: var(--primary-purple);
+            border: none;
+            color: var(--primary-white);
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0;
+        }
+        .begin-area button:hover{
+            background-color: #4b3370;
+        }
+        .progress-bar{
+            height: 25px;
+            width: 350px;
+            border: 1px solid var(--secondary-white);
+            padding: 3px;
+        }
+        .progress-value{
+            height: 100%;
+            background: var(--secondary-white);
+            transition: .5s ease;
+        }
+        canvas{
+            filter: blur(7px);
+            opacity: 0;
+            transition: .5s;
+        }
+        .globe-icon{
+            text-align: center;
+            padding-top: 10px;
+        }
+        .ion{
+            color: var(--secondary-white);
+            font-size: 25px;
+            cursor: pointer;
+            pointer-events: none;
+            opacity: 50%;
+        }
     </style>
 </head>
 <body>
+    <div class="begin-area">
+        <div class="title-discover"><span>Explore & Descubra</span></div>
+        <div class="main-title"><h1>Residencial Primavera</h1></div>
+        <div class="button-area"><button>Começar</button></div>
+    </div>
+    <div class="progress-area">
+        <div class="progress-bar"><div class="progress-value"></div></div>
+    </div>
     <div class="sidebar">
         <a href="https://samuelalmeidadev.com.br/portfolio" target="_blank" class="main-logo"><img src="https://samuelalmeidadev.com.br/portfolio/assets/img/main-logo.svg" height="35" /></a>
+        <div class="globe-icon"><ion-icon class="ion" name="globe-outline"></ion-icon></div>
     </div>
     <div class="blockInfoSidebar">
         <div class="container">
@@ -104,5 +194,7 @@
         </div>
     </div>
     <script type="module" src="dist/main.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
