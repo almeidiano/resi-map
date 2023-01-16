@@ -61,7 +61,7 @@
             background-color: aquamarine;
         }
         .sidebar{
-            position: absolute;
+            position: fixed;
             background: rgba(0, 0, 0, 0.8);
             height: 100%;
             width: 50px;
@@ -70,11 +70,11 @@
         }
         .blockInfoSidebar {
             width: 0px;
-            height: 100%;
-            position: absolute;
+            height: -webkit-fill-available;
+            position: fixed;
             right: 0;
             overflow: hidden;
-            z-index: 9;
+            z-index: 999;
         }
         .main-logo{
             padding: 10px 0px;
@@ -104,9 +104,9 @@
         }
         .progress-area,
         .begin-area{
-            height: 100vh;
+            height: -webkit-fill-available;
             width: 100%;
-            position: absolute;
+            position: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -155,6 +155,7 @@
             height: 100%;
             background: var(--secondary-white);
             transition: .5s ease;
+            width: 1px;
         }
         canvas{
             filter: blur(7px);
@@ -171,6 +172,37 @@
             cursor: pointer;
             pointer-events: none;
             opacity: 50%;
+        }
+        @media (max-width: 768px) {
+            .main-title h1 {
+                font-size: xx-large;
+            }
+            .sidebar {
+                display: flex !important;
+                height: 50px;
+                width: 100%;
+                align-items: center
+            }
+            .main-logo {
+                padding: 0px 30px;
+                display: flex;
+                justify-content: center;
+            }
+            .globe-icon {
+                text-align: center;
+                padding-top: 0px;
+                padding-right: 15px;
+                align-items: center;
+                display: flex;
+            }
+        }
+        @media (max-width: 425px) {
+            .main-title h1 {
+                font-size: x-large;
+            }
+            .blockInfoSidebar {
+                margin-top: 50px;
+            }
         }
     </style>
 </head>

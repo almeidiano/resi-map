@@ -99,6 +99,17 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
             document.querySelector('.ion').style.pointerEvents = 'none';
         }
     }
+    
+    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+        let progressValue = document.querySelector('.progress-value');  
+
+        if(itemsTotal < 5) {
+            progressValue.style.width = '1px';
+        }else{
+            const loadedItems = itemsLoaded/itemsTotal * 100;
+            progressValue.style.width = `${loadedItems}%`;
+        }
+    };
 
     manager.onLoad = function ( ) {
         setTimeout(() => {
@@ -121,13 +132,6 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
                 gsap.to(camera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
             })
         })  
-    };
-    
-    manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-        let progressValue = document.querySelector('.progress-value');  
-        const loadedItems = itemsLoaded/itemsTotal * 100;
-
-        progressValue.style.width = `${loadedItems}%`;
     };
 
     function animate() {
@@ -156,7 +160,8 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
 
         document.querySelector('.buildingCategory span').innerText = buildingCategory;
         document.querySelector('.blockInfo p').innerHTML = buildingDesc;
-        gsap.to('.blockInfoSidebar', {width: '350px'})
+        
+        window.screen.width <= 425 ? gsap.to('.blockInfoSidebar', {width: '100%'}) : gsap.to('.blockInfoSidebar', {width: '350px'});
     }
 
     function closeSidebar() {
