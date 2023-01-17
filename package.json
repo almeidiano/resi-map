@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "gsap": "^3.11.4",
+    "intro.js": "^6.0.0",
+    "style-loader": "^3.3.1",
     "three": "^0.148.0",
     "three-css2drender": "^1.0.0",
     "tippy.js": "^6.3.7"

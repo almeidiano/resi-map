@@ -16,7 +16,7 @@ module.exports = {
     filename: 'main.js'
   },
   module: {
-    rules: [{test: /\.css$/, use: ['css-loader', 'source-map-loader']}]
+    rules: [{test: /\.css$/, use: ['style-loader', 'css-loader']}]
   },
 
   // Default mode for Webpack is production.

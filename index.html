@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resi Map</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.min.css" integrity="sha512-HbPh+j4V7pXprvQMt2dtmK/zCEsUeZWYXRln4sOwmoyHPQAPqy/k9lIquKUyKNpNbDGAY06UdiDHcEkBc72yCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/6.0.0/introjs.min.css"/>
     <style>
        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); 
 
@@ -70,7 +70,7 @@
         }
         .blockInfoSidebar {
             width: 0px;
-            height: -webkit-fill-available;
+            height: 100%;
             position: fixed;
             right: 0;
             overflow: hidden;
@@ -104,7 +104,7 @@
         }
         .progress-area,
         .begin-area{
-            height: -webkit-fill-available;
+            height: 100vh;
             width: 100%;
             position: fixed;
             display: flex;
@@ -157,12 +157,16 @@
             transition: .5s ease;
             width: 1px;
         }
+        .progress-area span {
+            margin: 10px 0px;
+            color: var(--primary-white);
+        }
         canvas{
             filter: blur(7px);
             opacity: 0;
             transition: .5s;
         }
-        .globe-icon{
+        .menu-icon{
             text-align: center;
             padding-top: 10px;
         }
@@ -188,20 +192,20 @@
                 display: flex;
                 justify-content: center;
             }
-            .globe-icon {
+            .menu-icon {
                 text-align: center;
                 padding-top: 0px;
                 padding-right: 15px;
                 align-items: center;
                 display: flex;
             }
+            .blockInfoSidebar {
+                margin-top: 50px;
+            }
         }
         @media (max-width: 425px) {
             .main-title h1 {
                 font-size: x-large;
-            }
-            .blockInfoSidebar {
-                margin-top: 50px;
             }
         }
     </style>
@@ -214,10 +218,12 @@
     </div>
     <div class="progress-area">
         <div class="progress-bar"><div class="progress-value"></div></div>
+        <span>Carregando...</span>
     </div>
     <div class="sidebar">
         <a href="https://samuelalmeidadev.com.br/portfolio" target="_blank" class="main-logo"><img src="https://samuelalmeidadev.com.br/portfolio/assets/img/main-logo.svg" height="35" /></a>
-        <div class="globe-icon"><ion-icon class="ion" name="globe-outline"></ion-icon></div>
+        <div class="menu-icon globe"><ion-icon data-intro='Para voltar à posição inicial, clique aqui.' class="ion" name="globe-outline"></ion-icon></div>
+        <div class="menu-icon"><ion-icon class="ion help" name="help"></ion-icon></div>
     </div>
     <div class="blockInfoSidebar">
         <div class="container">

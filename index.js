@@ -3,14 +3,17 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import gsap from 'gsap';
+import allBuildings from './buildings.js';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
-import 'tippy.js/animations/scale.css';
-import 'tippy.js/themes/light.css';
-import allBuildings from './buildings.js';
+import 'intro.js/minified/introjs.min.css';
+import introJs from 'intro.js';
 
-const pointer = new Vector2();
-const raycaster = new Raycaster();
+// introJs.setOptions({ doneLabel : 'Ok' });
+
+document.querySelector('.help').onclick = () => {
+    introJs('.globe').start();
+}
 
 const manager = new LoadingManager();
 const loader = new GLTFLoader(manager);
@@ -49,6 +52,13 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
 
 } );
 
+    const labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.domElement.style.position = "absolute";
+    labelRenderer.domElement.style.top = "0px";
+    labelRenderer.domElement.style.opacity = 0;
+    document.body.appendChild(labelRenderer.domElement);
+
     var buildingList = [];
     var buildingObj = {};
 
@@ -81,22 +91,47 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
                 placement: 'right'
             });  
         }
+        
+        building.onclick = () =>{
+            let blockTarget = building.getAttribute('block');
+            let buildingTarget = building.getAttribute('name');
+
+            if (buildingTarget) {
+                gsap.to(labelRenderer.domElement, {opacity: 0});
+                ionCommand('deactivate');
+                let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget))
+
+                if(buildingInfo) {
+                    gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
+                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){showSidebarInfo(buildingInfo[0].name, buildingInfo[0].category, buildingInfo[0].desc, buildingInfo[0].isBuilding), ionCommand('activate')}})
+                }
+
+            }else if(blockTarget) {
+                gsap.to(labelRenderer.domElement, {opacity: 0});
+                ionCommand('deactivate');
+                let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
+
+                if(buildingInfo) {
+                    gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
+                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){showSidebarInfo(buildingInfo[0].name, buildingInfo[0].category, buildingInfo[0].desc, buildingInfo[0].isBuilding), ionCommand('activate')}})
+                }
+            }
+        }
     }
 
-    const labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(window.innerWidth, window.innerHeight);
-    labelRenderer.domElement.style.position = "absolute";
-    labelRenderer.domElement.style.top = "0px";
-    labelRenderer.domElement.style.opacity = 0;
-    document.body.appendChild(labelRenderer.domElement);
-
     function ionCommand(state) {
+        let ions = document.querySelectorAll('.ion');
+
         if(state === 'activate') {
-            document.querySelector('.ion').style.opacity = "100%";
-            document.querySelector('.ion').style.pointerEvents = 'all';
+            ions.forEach((ion) => {
+                ion.style.opacity = '100%';
+                ion.style.pointerEvents = 'all';
+            })
         }else if(state === 'deactivate') {
-            document.querySelector('.ion').style.opacity = "50%";
-            document.querySelector('.ion').style.pointerEvents = 'none';
+            ions.forEach((ion) => {
+                ion.style.opacity = '50%';
+                ion.style.pointerEvents = 'none';
+            })
         }
     }
     
@@ -168,32 +203,6 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         gsap.to('.blockInfoSidebar', {width: '0px'})
     }
 
-    function onMouseClick(block) {
-        let blockTarget = block.target.getAttribute('block');
-        let buildingTarget = block.target.getAttribute('name');
-
-        if (buildingTarget) {
-            gsap.to(labelRenderer.domElement, {opacity: 0});
-            ionCommand('deactivate');
-            let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget))
-
-            if(buildingInfo) {
-                gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){showSidebarInfo(buildingInfo[0].name, buildingInfo[0].category, buildingInfo[0].desc, buildingInfo[0].isBuilding), ionCommand('activate')}})
-            }
-
-        }else if(blockTarget) {
-            gsap.to(labelRenderer.domElement, {opacity: 0});
-            ionCommand('deactivate');
-            let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
-
-            if(buildingInfo) {
-                gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){showSidebarInfo(buildingInfo[0].name, buildingInfo[0].category, buildingInfo[0].desc, buildingInfo[0].isBuilding), ionCommand('activate')}})
-            }
-        }
-    }
-
     animate();
     window.addEventListener('resize', resize, false);
-    document.addEventListener('click', onMouseClick );
+    
