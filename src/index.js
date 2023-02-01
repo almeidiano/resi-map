@@ -9,8 +9,6 @@ import 'tippy.js/dist/tippy.css';
 import 'intro.js/minified/introjs.min.css';
 import introJs from 'intro.js';
 
-// introJs.setOptions({ doneLabel : 'Ok' });
-
 document.querySelector('.help').onclick = () => {
     introJs('.globe').start();
 }
@@ -25,14 +23,16 @@ const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
+// Setting initial cam pos & light 
 camera.position.set(0, 0, 1.2700000000000002);
-
 light.intensity = 1.50;
 scene.add(light);
 
+// Enabling orbit controls to future changes 
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
+// Loading 3D file and setting it's position
 loader.load( 'resi_complete.gltf', function ( gltf ) {
     scene.background = new Color( 0x71BCE1 );
     scene.add( gltf.scene );
@@ -47,11 +47,10 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
     gltf.scene.quaternion._z = -0.5665943748293979;
 
 }, undefined, function ( error ) {
-
 	console.error( error );
-
 } );
 
+    // Creating 2D renderer
     const labelRenderer = new CSS2DRenderer();
     labelRenderer.setSize(window.innerWidth, window.innerHeight);
     labelRenderer.domElement.style.position = "absolute";
@@ -62,8 +61,10 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
     var buildingList = [];
     var buildingObj = {};
 
+    // For each building, it creates a label div
     for(let i = 0; i < allBuildings.length; i++) {
         const building = document.createElement("div");
+        // let buildingAfter = window.getComputedStyle(building, "::after");
         building.className = "label";
         
         if (allBuildings[i].isBuilding) {
@@ -72,6 +73,7 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
             building.setAttribute('name', allBuildings[i].name);
         }
     
+        // Passing all labels as a 2D renderer object, setting it position and adding to the scene
         building.style.marginTop = "-1em";
         buildingObj = new CSS2DObject(building);
         buildingObj.position.set(allBuildings[i].x,allBuildings[i].y,0);
@@ -92,6 +94,7 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
             });  
         }
         
+        // On label click, go to building position and showing it respective info
         building.onclick = () =>{
             let blockTarget = building.getAttribute('block');
             let buildingTarget = building.getAttribute('name');
@@ -135,6 +138,7 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         }
     }
     
+    // Loading bar
     manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
         let progressValue = document.querySelector('.progress-value');  
 
@@ -185,6 +189,7 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         ui.style.aspectRatio = window.innerWidth / window.innerHeight;
       }
 
+    // self explanatory
     function showSidebarInfo(buildingName, buildingCategory, buildingDesc, isBuilding) {
         
         if(isBuilding) {

@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'); 
+
+a{
+    color: var(--primary-purple);
+}
+
+:root{
+    --primary-white: #e8e6e3;
+    --secondary-white: #D2D4DA;
+    --primary-purple: #5b467d;
+}
+
+.high-emphasis{
+    opacity: 87% !important;
+}
+
+h1,h2,h3,h4,h5{
+    margin: 0;
+    padding: 0;
+    color: var(--primary-white);
+}
+.buildingCategory span{
+    color: var(--secondary-white);
+}
+
+body { margin: 0; font-family: 'Poppins', sans-serif; }
+canvas{width: 100%; height: 100%;}
+.label {
+    border: 1px solid #FFF;
+    height: 16px;
+    width: 16px;
+    border-radius: 100%;
+    transition: .3s ease;
+    display: block;
+    animation: labelBlink 2s ease-in-out infinite alternate;
+}
+.label::before{
+    content: '';
+    background-color: #FFF;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 100%;
+    top: 3px;
+    left: 3px;
+    transition: .3s ease;
+    cursor: pointer;
+    animation: labelAfterBlink 2s ease-in-out infinite alternate;
+}
+@keyframes labelAfterBlink {
+    0% {
+        background-color: #FFF;
+    } 
+    100% {
+        background-color: aquamarine;
+    }
+}
+@keyframes labelBlink {
+    0% {
+        border: 1px solid #FFF;
+    } 
+    100% {
+        border: 1px solid aquamarine;
+    }
+}
+.label:hover{
+    border: 1px solid aquamarine;
+}
+.label:hover::before{
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    background-color: aquamarine !important;
+}
+.sidebar{
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    width: 50px;
+    z-index: 999;
+    display: none;
+}
+.blockInfoSidebar {
+    width: 0px;
+    height: 100%;
+    position: fixed;
+    right: 0;
+    overflow: hidden;
+    z-index: 999;
+}
+.main-logo{
+    padding: 10px 0px;
+    display: flex;
+    justify-content: center;
+}
+.container{
+    width: 90%;
+    margin: auto;
+    padding: 20px 0px;
+}
+.blockInfo p{
+    font-size: 14px;
+    color: var(--secondary-white);
+    white-space: normal;
+    width: 315px;
+}
+.blockInfo{
+    white-space: nowrap;
+}
+html{
+    background-color: #181a1b !important;
+}
+.progress-area,
+.blockInfoSidebar{
+    background: linear-gradient(225deg, rgba(60,42,84,255) 0%, #1d1328 100%);
+}
+.progress-area,
+.begin-area{
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.begin-area{
+    z-index: 999;
+}
+.title-discover{
+    font-weight: bold;
+    color: var(--primary-purple);
+}
+.main-title h1{
+    font-size: xxx-large;
+}
+.title-discover,
+.main-title h1{
+    transform: translateY(15px);
+    opacity: 0;
+}
+.button-area{
+    margin-top: 20px;
+}
+.begin-area button{
+    height: 40px;
+    width: 110px;
+    background: var(--primary-purple);
+    border: none;
+    color: var(--primary-white);
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0;
+}
+.begin-area button:hover{
+    background-color: #4b3370;
+}
+.progress-bar{
+    height: 25px;
+    width: 350px;
+    border: 1px solid var(--secondary-white);
+    padding: 3px;
+}
+.progress-value{
+    height: 100%;
+    background: var(--secondary-white);
+    transition: .5s ease;
+    width: 1px;
+}
+.progress-area span {
+    margin: 10px 0px;
+    color: var(--primary-white);
+}
+canvas{
+    filter: blur(7px);
+    opacity: 0;
+    transition: .5s;
+}
+.menu-icon{
+    text-align: center;
+    padding-top: 10px;
+}
+.ion{
+    color: var(--secondary-white);
+    font-size: 25px;
+    cursor: pointer;
+    pointer-events: none;
+    opacity: 50%;
+}
+@media (max-width: 768px) {
+    .main-title h1 {
+        font-size: xx-large;
+    }
+    .sidebar {
+        display: flex !important;
+        height: 50px;
+        width: 100%;
+        align-items: center
+    }
+    .main-logo {
+        padding: 0px 30px;
+        display: flex;
+        justify-content: center;
+    }
+    .menu-icon {
+        text-align: center;
+        padding-top: 0px;
+        padding-right: 15px;
+        align-items: center;
+        display: flex;
+    }
+    .blockInfoSidebar {
+        margin-top: 50px;
+    }
+}
+@media (max-width: 425px) {
+    .main-title h1 {
+        font-size: x-large;
+    }
+}
