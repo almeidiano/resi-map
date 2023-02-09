@@ -1,25 +1,34 @@
+// ThreeJS library import
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+// Other libraries imports
+
+// JS
 import gsap from 'gsap';
-import allBuildings from './buildings.js';
 import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-import 'intro.js/minified/introjs.min.css';
 import introJs from 'intro.js';
 
-document.querySelector('.help').onclick = () => {
-    introJs('.globe').start();
-}
+// CSS
+import 'materialize-css/dist/css/materialize.min.css';
+import 'materialize-css/dist/js/materialize.js';
+import 'tippy.js/dist/tippy.css';
+import 'intro.js/minified/introjs.min.css';
 
+// Vanilla project imports
+import { Ions, Button, PreLoader, SidebarInfo, Version } from './classes/classes.js';
+import allBuildings from './buildings.js';
+
+// ThreeJS object instantiation
 const manager = new LoadingManager();
 const loader = new GLTFLoader(manager);
 const scene = new Scene();
 const light = new AmbientLight();
 const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
 const renderer = new WebGLRenderer({antialias: true, alpha: true});
+
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
@@ -31,6 +40,16 @@ scene.add(light);
 // Enabling orbit controls to future changes 
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
+
+const ions = new Ions();
+const startButton = new Button('Começar');
+const version = new Version();
+
+document.querySelector(`.button-area`).innerHTML = startButton.setBtn();
+
+document.querySelector('.help').onclick = () => {
+    introJs('.globe').start();
+}
 
 // Loading 3D file and setting it's position
 loader.load( 'resi_complete.gltf', function ( gltf ) {
@@ -50,16 +69,16 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
 	console.error( error );
 } );
 
-    // Creating 2D renderer
-    const labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(window.innerWidth, window.innerHeight);
-    labelRenderer.domElement.style.position = "absolute";
-    labelRenderer.domElement.style.top = "0px";
-    labelRenderer.domElement.style.opacity = 0;
-    document.body.appendChild(labelRenderer.domElement);
+// Creating 2D renderer
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = "absolute";
+labelRenderer.domElement.style.top = "0px";
+labelRenderer.domElement.style.opacity = 0;
+document.body.appendChild(labelRenderer.domElement);
 
-    var buildingList = [];
-    var buildingObj = {};
+var buildingList = [];
+var buildingObj = {};
 
     // For each building, it creates a label div
     for(let i = 0; i < allBuildings.length; i++) {
@@ -95,58 +114,43 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
         }
         
         // On label click, go to building position and showing it respective info
-        building.onclick = () =>{
+        building.onclick = () => {
+            ions.ionsState = false;
             let blockTarget = building.getAttribute('block');
             let buildingTarget = building.getAttribute('name');
 
             if (buildingTarget) {
                 gsap.to(labelRenderer.domElement, {opacity: 0});
-                ionCommand('deactivate');
-                let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget))
+                let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget));
+                const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
 
                 if(buildingInfo) {
                     gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){showSidebarInfo(buildingInfo[0].name, buildingInfo[0].category, buildingInfo[0].desc, buildingInfo[0].isBuilding), ionCommand('activate')}})
+                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), ions.ionsState = true}})
                 }
 
             }else if(blockTarget) {
                 gsap.to(labelRenderer.domElement, {opacity: 0});
-                ionCommand('deactivate');
                 let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
+                const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
 
                 if(buildingInfo) {
                     gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){showSidebarInfo(buildingInfo[0].name, buildingInfo[0].category, buildingInfo[0].desc, buildingInfo[0].isBuilding), ionCommand('activate')}})
+                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), ions.ionsState = true}})
                 }
             }
         }
     }
 
-    function ionCommand(state) {
-        let ions = document.querySelectorAll('.ion');
-
-        if(state === 'activate') {
-            ions.forEach((ion) => {
-                ion.style.opacity = '100%';
-                ion.style.pointerEvents = 'all';
-            })
-        }else if(state === 'deactivate') {
-            ions.forEach((ion) => {
-                ion.style.opacity = '50%';
-                ion.style.pointerEvents = 'none';
-            })
-        }
-    }
-    
     // Loading bar
     manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
-        let progressValue = document.querySelector('.progress-value');  
+        let preLoader = new PreLoader();
+        document.querySelector('.progress-area').innerHTML = preLoader.setLoader(); 
 
-        if(itemsTotal < 5) {
-            progressValue.style.width = '1px';
-        }else{
+        if(itemsTotal > 5) {
             const loadedItems = itemsLoaded/itemsTotal * 100;
-            progressValue.style.width = `${loadedItems}%`;
+            preLoader.width = loadedItems; 
+            document.querySelector('.progress-area').innerHTML = preLoader.setLoader();
         }
     };
 
@@ -155,18 +159,20 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
             document.querySelector('.progress-area').style.display = 'none';
             document.querySelector('.sidebar').style.display = 'block';
             gsap.to('canvas', {opacity: 1, duration: 2, ease: "power3.out"});
-            gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area button', {opacity: 1, duration: 1})}})}});
+            gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area a', {opacity: 1, duration: 1})}})}});
         }, 1000);
     
-        document.querySelector('.begin-area button').addEventListener('click', function() {
-            document.querySelector('.begin-area').style.opacity = 0;
-            document.querySelector('.begin-area').style.zIndex = 0;
-            ionCommand('activate');
-            gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
-            gsap.to('canvas', {filter: "blur(0px)", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1, duration: 1})}});
+        document.querySelector('.begin-area a').addEventListener('click', function() {
+            setTimeout(() => {
+                document.querySelector('.begin-area').style.opacity = 0;
+                document.querySelector('.begin-area').style.zIndex = 0;
+                ions.ionsState = true;
+                gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
+                gsap.to('canvas', {filter: "blur(0px)", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1, duration: 1})}});
+            }, 250);
 
             document.querySelector('.ion').addEventListener('click', () => {
-                closeSidebar();
+                gsap.to('.blockInfoSidebar', {width: '0px'})
                 gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
                 gsap.to(camera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
             })
@@ -187,27 +193,8 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
 
         const ui = document.querySelector('.blocksUi');
         ui.style.aspectRatio = window.innerWidth / window.innerHeight;
-      }
-
-    // self explanatory
-    function showSidebarInfo(buildingName, buildingCategory, buildingDesc, isBuilding) {
-        
-        if(isBuilding) {
-            document.querySelector('.blockName').innerText = `Bloco ${buildingName}`;
-        }else{
-            document.querySelector('.blockName').innerText = buildingName;
-        }
-
-        document.querySelector('.buildingCategory span').innerText = buildingCategory;
-        document.querySelector('.blockInfo p').innerHTML = buildingDesc;
-        
-        window.screen.width <= 425 ? gsap.to('.blockInfoSidebar', {width: '100%'}) : gsap.to('.blockInfoSidebar', {width: '350px'});
     }
 
-    function closeSidebar() {
-        gsap.to('.blockInfoSidebar', {width: '0px'})
-    }
-
-    animate();
-    window.addEventListener('resize', resize, false);
+animate();
+window.addEventListener('resize', resize, false);
     
