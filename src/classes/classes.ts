@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import packageInfo from '../../package.json';
+import * as packageInfo from '../../package.json';
 
 class Ions {
     _ions;
@@ -27,29 +27,38 @@ class Ions {
 }
 
 class Button {
-    constructor(name) {
-        this.name = name;
-    }
+    static newButtonText: string = 'asd';
 
-    setBtn() {
-        return `<a class="waves-effect waves-light btn deep-purple darken-2">${this.name}</a>`;
+    static render(buttonText) {
+        this.newButtonText = buttonText;
+        document.querySelector('.button-area').innerHTML = `<a class="waves-effect waves-light btn deep-purple darken-2">${this.newButtonText}</a>`;
     }
 }
 
 class PreLoader {
-    _width = 1;
+    static newWidth: number = 1;
 
-    set value(width) {
-        this.width = width;
+    static value(width) {
+        this.newWidth = width;
     }
 
-    setLoader() {
-        return `<div class="progress deep-purple lighten-3" style="width: 350px"><div class="determinate deep-purple darken-1" style="width: ${this.width}%"></div></div> <span>Carregando...</span>`
+    static setLoader() {
+        return `<div class="progress deep-purple lighten-3" style="width: 350px"><div class="determinate deep-purple darken-1" style="width: ${this.newWidth}%"></div></div> <span>Carregando...</span>`
     }
 }
 
-class SidebarInfo {
+interface ISidebarInfo {
+    buildingName: string;
+    buildingDesc: string;
+    isBuilding: boolean;
+    category: string; 
+}
+
+class SidebarInfo implements ISidebarInfo {
     category = null;
+    buildingName;
+    buildingDesc;
+    isBuilding
 
     constructor(buildingName, buildingDesc, isBuilding) {
         this.buildingName = buildingName;
@@ -61,23 +70,23 @@ class SidebarInfo {
     }
 
     render () {
-        document.querySelector('.blockName').innerText = this.buildingName;
-        document.querySelector('.buildingCategory span').innerText = this.category;
+        document.querySelector<HTMLElement>('.blockName').innerText = this.buildingName;
+        document.querySelector<HTMLElement>('.buildingCategory span').innerText = this.category;
         document.querySelector('.blockInfo p').innerHTML = this.buildingDesc;
         window.screen.width <= 425 ? gsap.to('.blockInfoSidebar', {width: '100%'}) : gsap.to('.blockInfoSidebar', {width: '350px'});
     }
 
-    closeSidebar() {
+    closeSidebar(threeJSCamera, labelRenderer) {
         document.querySelector('.ion').addEventListener('click', () => {
             gsap.to('.blockInfoSidebar', {width: '0px'})
-            gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
-            gsap.to(camera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
+            gsap.to(threeJSCamera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
+            gsap.to(threeJSCamera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
         })
     }
 }
 
 class Version {
-    constructor() {
+    static display() {
         let projectVersion = document.createElement('div');
         projectVersion.innerText = packageInfo.version;
         projectVersion.classList.add('version');

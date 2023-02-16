@@ -1,6 +1,6 @@
 {
   "name": "map_resi",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Explore the Residencial Primavera 1 through an interactive map",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,8 @@
     "style-loader": "^3.3.1",
     "three": "^0.148.0",
     "three-css2drender": "^1.0.0",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
     "css-loader": "^6.7.3",

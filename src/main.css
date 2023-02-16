@@ -8,6 +8,34 @@ a{
     --primary-white: #e8e6e3;
     --secondary-white: #D2D4DA;
     --primary-purple: #5b467d;
+    --primary-activated: #3880ff;
+}
+
+.ion-label{
+    color: var(--primary-white);
+    animation: ionLabel 2s ease-in-out infinite alternate;
+    font-size: 18px;
+}
+
+ion-icon:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.ion-label:hover {
+    color: var(--primary-activated) !important;
+}
+
+@keyframes ionLabel {
+    0% {
+        color: #FFF;
+    } 
+    100% {
+        color: var(--primary-activated)
+    }
 }
 
 .high-emphasis{
@@ -25,56 +53,6 @@ h1,h2,h3,h4,h5{
 
 body { margin: 0; font-family: 'Poppins', sans-serif; }
 canvas{width: 100%; height: 100%;}
-.label {
-    border: 1px solid #FFF;
-    height: 16px;
-    width: 16px;
-    border-radius: 100%;
-    transition: .3s ease;
-    display: block;
-    animation: labelBlink 2s ease-in-out infinite alternate;
-}
-.label::before{
-    content: '';
-    background-color: #FFF;
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    border-radius: 100%;
-    top: 2px;
-    left: 2px;
-    transition: .3s ease;
-    cursor: pointer;
-    animation: labelAfterBlink 2s ease-in-out infinite alternate;
-}
-@keyframes labelAfterBlink {
-    0% {
-        background-color: #FFF;
-    } 
-    100% {
-        background-color: aquamarine;
-    }
-}
-@keyframes labelBlink {
-    0% {
-        border: 1px solid #FFF;
-        box-shadow: 0px 0px 0px 0px aquamarine;
-    } 
-    100% {
-        border: 1px solid aquamarine;
-        box-shadow: 0px 0px 5px 1px aquamarine;
-    }
-}
-.label:hover{
-    border: 1px solid aquamarine;
-}
-.label:hover::before{
-    width: 14px;
-    height: 14px;
-    top: 0;
-    left: 0;
-    background-color: aquamarine !important;
-}
 .sidebar{
     position: fixed;
     background: rgba(0, 0, 0, 0.8);
@@ -131,6 +109,9 @@ html{
     align-items: center;
     flex-direction: column;
 }
+.progress-area span{
+    color: var(--primary-white)
+}
 .begin-area{
     z-index: 999;
 }
@@ -150,22 +131,6 @@ html{
 }
 .button-area{
     margin-top: 20px;
-}
-.progress-bar{
-    height: 25px;
-    width: 350px;
-    border: 1px solid var(--secondary-white);
-    padding: 3px;
-}
-.progress-value{
-    height: 100%;
-    background: var(--secondary-white);
-    transition: .5s ease;
-    width: 1px;
-}
-.progress-area span {
-    margin: 10px 0px;
-    color: var(--primary-white);
 }
 canvas{
     filter: blur(7px);
@@ -194,6 +159,15 @@ canvas{
     color: var(--primary-white);
     bottom: 0;
     right: 0;
+}
+.github {
+    color: var(--secondary-white); 
+    font-size: 25px; 
+    cursor: pointer; 
+}
+.menu-icon a{
+    display: flex;
+    justify-content: center;
 }
 @media (max-width: 768px) {
     .main-title h1 {

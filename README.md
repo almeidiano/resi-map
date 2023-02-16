@@ -1,3 +1,6 @@
+## Warning (1.2.0 version)
+As this project is highly scalable, the programming language has been moved to [TypeScript](https://www.typescriptlang.org/)
+
 # Resi Map
 
 <a href="#"><img src="https://img.shields.io/badge/Documentation-Yes-brightgreen" /></a> 
@@ -44,6 +47,8 @@ $ npm install
 - [Tippy.JS](https://atomiks.github.io/tippyjs/) - Tippy.js is the complete tooltip, popover, dropdown, and menu solution for the web.
 - [IntroJS](https://introjs.com/) - Intro.js is a lightweight JavaScript library for creating step-by-step and powerful customer onboarding tours
 - [MaterializeCSS](https://materializecss.com/) - A modern responsive front-end framework based on Material Design
+- [WebPack](https://webpack.js.org/) - Webpack is used to compile JavaScript modules.
+- [TypeScript](https://www.typescriptlang.org/) - TypeScript is a strongly typed programming language that builds on JavaScript.
 
 ## Author
 
