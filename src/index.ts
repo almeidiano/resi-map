@@ -138,6 +138,11 @@ for(let i = 0; i < allBuildings.length; i++) {
 }
 
 // Loading bar
+manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+    let progressArea = document.querySelector('.progress-area');
+    progressArea.innerHTML = PreLoader.setLoader(); 
+};
+
 manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
     let progressArea = document.querySelector('.progress-area');
     progressArea.innerHTML = PreLoader.setLoader(); 
