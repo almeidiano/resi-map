@@ -61,53 +61,53 @@ loader.load( './resi_complete.gltf', function ( gltf: any ) {
     gltf.scene.quaternion._y = -0.5130005247426389;
     gltf.scene.quaternion._z = -0.5665943748293979;
 
-    document.addEventListener('keydown', (event) => {
-        var code = event.code;
+    // document.addEventListener('keydown', (event) => {
+    //     var code = event.code;
     
-        switch (code) {
-            // pos
-            case 'ArrowUp':
-                camera.position.y += 0.01;
-            break;
-            case 'ArrowDown':
-                camera.position.y -= 0.01;
-            break;
-            case 'ArrowLeft':
-                camera.position.x -= 0.01;
-            break;
-            case 'ArrowRight':
-                camera.position.x += 0.01;
-            break;
-            case 'KeyS':
-                camera.position.z -= 0.01;
-            break;
-            case 'KeyW':
-                camera.position.z += 0.01;
-            break;
+    //     switch (code) {
+    //         // pos
+    //         case 'ArrowUp':
+    //             camera.position.y += 0.01;
+    //         break;
+    //         case 'ArrowDown':
+    //             camera.position.y -= 0.01;
+    //         break;
+    //         case 'ArrowLeft':
+    //             camera.position.x -= 0.01;
+    //         break;
+    //         case 'ArrowRight':
+    //             camera.position.x += 0.01;
+    //         break;
+    //         case 'KeyS':
+    //             camera.position.z -= 0.01;
+    //         break;
+    //         case 'KeyW':
+    //             camera.position.z += 0.01;
+    //         break;
 
-            //rotation
-            case 'KeyI':
-                camera.rotation.y += 0.01;
-            break;
-            case 'KeyK':
-                camera.rotation.y -= 0.01;
-            break;
-            case 'KeyJ':
-                camera.rotation.x -= 0.01;
-            break;
-            case 'KeyL':
-                camera.rotation.x += 0.01;
-            break;
-            case 'KeyQ':
-                camera.rotation.z -= 0.01;
-            break;
-            case 'KeyE':
-                camera.rotation.z += 0.01;
-            break;
-        }
+    //         //rotation
+    //         case 'KeyI':
+    //             camera.rotation.y += 0.01;
+    //         break;
+    //         case 'KeyK':
+    //             camera.rotation.y -= 0.01;
+    //         break;
+    //         case 'KeyJ':
+    //             camera.rotation.x -= 0.01;
+    //         break;
+    //         case 'KeyL':
+    //             camera.rotation.x += 0.01;
+    //         break;
+    //         case 'KeyQ':
+    //             camera.rotation.z -= 0.01;
+    //         break;
+    //         case 'KeyE':
+    //             camera.rotation.z += 0.01;
+    //         break;
+    //     }
     
-        console.log(camera);
-    }, false);
+    //     console.log(camera);
+    // }, false);
 
 }, undefined, function ( error: any ) {
 	console.error( error );
@@ -225,7 +225,6 @@ manager.onLoad = function ( ) {
             let beginArea = document.querySelector<HTMLElement>('.begin-area');
             beginArea!.style.opacity = "0";
             beginArea!.style.zIndex = "0";
-            Ions.setState = true;
             gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
             gsap.to('canvas', {filter: "blur(0px)", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1, duration: 1, onComplete(){introJs('.globe').start()}})}});
         }, 250);
