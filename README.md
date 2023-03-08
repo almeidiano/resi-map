@@ -17,7 +17,9 @@ Project rewrited to [Vite](https://vitejs.dev/)
 
 ### Prerequisites
 
-To run this project in the development mode, you'll need to have a basic environment to run Webpack, the information can be found [here](https://webpack.js.org/guides/getting-started/).
+To run this project in the development mode, you'll need to have a basic environment to run Vite, the information can be found [here](https://vitejs.dev/).
+
+To change this code is better to you have typescript language knowledge, this can be found [here](https://www.typescriptlang.org/)
 
 ### Installing
 
