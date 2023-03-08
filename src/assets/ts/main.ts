@@ -197,6 +197,10 @@ manager.onStart = function () {
     progressArea!.innerHTML = PreLoader.setLoader(); 
 };
 
+// ignoring the unused url parameter
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 manager.onProgress = function (url: any, itemsLoaded: number, itemsTotal: number ) {
     let progressArea = document.querySelector('.progress-area');
     progressArea!.innerHTML = PreLoader.setLoader(); 
