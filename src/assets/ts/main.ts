@@ -18,10 +18,12 @@ import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.js';
 import 'tippy.js/dist/tippy.css';
 import 'intro.js/minified/introjs.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // Vanilla project imports
-import { Ions, Button, PreLoader, SidebarInfo, Version } from './classes/classes';
+import {UI_Audio, Ions, Button, Version, SidebarInfo, PreLoader} from './classes'; 
 import allBuildings from './buildings';
+import '../css/style.css';
 
 // ThreeJS object instantiation
 const manager = new LoadingManager();
@@ -42,13 +44,11 @@ scene.add(light);
 // Enabling orbit controls to future changes 
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
-
-const ions = new Ions();
 Button.render('Começar');
 Version.display();
 
 // Loading 3D file and setting it's position
-loader.load( 'resi_complete.gltf', function ( gltf ) {
+loader.load( './resi_complete.gltf', function ( gltf: any ) {
     scene.background = new Color( 0x71BCE1 );
     scene.add( gltf.scene );
 
@@ -61,7 +61,55 @@ loader.load( 'resi_complete.gltf', function ( gltf ) {
     gltf.scene.quaternion._y = -0.5130005247426389;
     gltf.scene.quaternion._z = -0.5665943748293979;
 
-}, undefined, function ( error ) {
+    document.addEventListener('keydown', (event) => {
+        var code = event.code;
+    
+        switch (code) {
+            // pos
+            case 'ArrowUp':
+                camera.position.y += 0.01;
+            break;
+            case 'ArrowDown':
+                camera.position.y -= 0.01;
+            break;
+            case 'ArrowLeft':
+                camera.position.x -= 0.01;
+            break;
+            case 'ArrowRight':
+                camera.position.x += 0.01;
+            break;
+            case 'KeyS':
+                camera.position.z -= 0.01;
+            break;
+            case 'KeyW':
+                camera.position.z += 0.01;
+            break;
+
+            //rotation
+            case 'KeyI':
+                camera.rotation.y += 0.01;
+            break;
+            case 'KeyK':
+                camera.rotation.y -= 0.01;
+            break;
+            case 'KeyJ':
+                camera.rotation.x -= 0.01;
+            break;
+            case 'KeyL':
+                camera.rotation.x += 0.01;
+            break;
+            case 'KeyQ':
+                camera.rotation.z -= 0.01;
+            break;
+            case 'KeyE':
+                camera.rotation.z += 0.01;
+            break;
+        }
+    
+        console.log(camera);
+    }, false);
+
+}, undefined, function ( error: any ) {
 	console.error( error );
 } );
 
@@ -77,9 +125,8 @@ var buildingList = [];
 
 // For each building, it creates a label div
 for(let i = 0; i < allBuildings.length; i++) {
-    const building = document.createElement("ion-icon");
-    building.setAttribute('name', 'logo-ionic');
-    building.className = 'ion-label';
+    const building = document.createElement("i");
+    building.className = 'fa-regular fa-circle-dot';
     
     if (allBuildings[i].isBuilding) {
         building.setAttribute('block', allBuildings[i].name);
@@ -107,10 +154,15 @@ for(let i = 0; i < allBuildings.length; i++) {
             placement: 'right'
         });  
     }
+
+    building.onmouseover = () => {
+        UI_Audio.hover('./hover.mp3');
+    }
     
     // On label click, go to building position and showing it respective info
     building.onclick = () => {
-        ions.ionsState = false;
+        Ions.setState = false;
+        UI_Audio.click('./click.mp3');
         let blockTarget = building.getAttribute('block');
         let buildingTarget = building.getAttribute('buildingName');
 
@@ -121,7 +173,7 @@ for(let i = 0; i < allBuildings.length; i++) {
 
             if(buildingInfo) {
                 gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), ions.ionsState = true}})
+                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
             }
 
         }else if(blockTarget) {
@@ -131,48 +183,54 @@ for(let i = 0; i < allBuildings.length; i++) {
 
             if(buildingInfo) {
                 gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), ions.ionsState = true}})
+                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
             }
         }
     }
 }
 
+interface ILoading {
+    url: any,
+    itemsLoaded: number,
+    itemsTotal: number
+}
+
 // Loading bar
-manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+manager.onStart = function () {
     let progressArea = document.querySelector('.progress-area');
-    progressArea.innerHTML = PreLoader.setLoader(); 
+    progressArea!.innerHTML = PreLoader.setLoader(); 
 };
 
-manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+manager.onProgress = function (url: any, itemsLoaded: number, itemsTotal: number ) {
     let progressArea = document.querySelector('.progress-area');
-    progressArea.innerHTML = PreLoader.setLoader(); 
+    progressArea!.innerHTML = PreLoader.setLoader(); 
 
     if(itemsTotal > 5) {
         const loadedItems = itemsLoaded/itemsTotal * 100;
         PreLoader.newWidth = loadedItems; 
-        progressArea.innerHTML = PreLoader.setLoader();
+        progressArea!.innerHTML = PreLoader.setLoader();
     }
 };
 
 manager.onLoad = function ( ) {
     setTimeout(() => {
-        document.querySelector<HTMLElement>('.progress-area').style.display = 'none';
-        document.querySelector<HTMLElement>('.sidebar').style.display = 'block';
+        document.querySelector<HTMLElement>('.progress-area')!.style.display = 'none';
+        document.querySelector<HTMLElement>('.sidebar')!.style.display = 'block';
         gsap.to('canvas', {opacity: 1, duration: 2, ease: "power3.out"});
         gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area a', {opacity: 1, duration: 1})}})}});
     }, 1000);
 
-    document.querySelector('.begin-area a').addEventListener('click', function() {
+    document.querySelector('.begin-area a')!.addEventListener('click', function() {
         setTimeout(() => {
             let beginArea = document.querySelector<HTMLElement>('.begin-area');
-            beginArea.style.opacity = "0";
-            beginArea.style.zIndex = "0";
-            ions.ionsState = true;
+            beginArea!.style.opacity = "0";
+            beginArea!.style.zIndex = "0";
+            Ions.setState = true;
             gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
             gsap.to('canvas', {filter: "blur(0px)", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1, duration: 1, onComplete(){introJs('.globe').start()}})}});
         }, 250);
 
-        document.querySelector('.ion').addEventListener('click', () => {
+        document.querySelector('.ion')!.addEventListener('click', () => {
             gsap.to('.blockInfoSidebar', {width: '0px'})
             gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
             gsap.to(camera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})

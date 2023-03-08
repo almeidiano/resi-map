@@ -11,23 +11,13 @@ a{
     --primary-activated: #3880ff;
 }
 
-.ion-label{
-    color: var(--primary-white);
-    animation: ionLabel 2s ease-in-out infinite alternate;
-    font-size: 18px;
-}
-
-ion-icon:before {
+/* ion-icon:before {
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
     cursor: pointer;
-}
-
-.ion-label:hover {
-    color: var(--primary-activated) !important;
-}
+} */
 
 @keyframes ionLabel {
     0% {
@@ -199,4 +189,14 @@ canvas{
     .main-title h1 {
         font-size: x-large;
     }
+}
+
+.fa-circle-dot:before, .fa-dot-circle:before {
+    color: var(--primary-white);
+    animation: ionLabel 2s ease-in-out infinite alternate;
+    cursor: pointer;
+}
+
+.fa-circle-dot:hover::before {
+    color: var(--primary-activated) !important;
 }

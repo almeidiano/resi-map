@@ -1,38 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Resi Map</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/6.0.0/introjs.min.css"/>
-    <link rel="stylesheet" href="src/main.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<body>
-    <div class="begin-area">
-        <div class="title-discover"><span>Explore & Descubra</span></div>
-        <div class="main-title"><h1>Residencial Primavera</h1></div>
-        <div class="button-area"></div>
+  </head>
+  <body>
+    <div id="app">
+      <div class="progress-area"></div>
+      <div class="begin-area"><div class="title-discover"><span>Explore & Descubra</span></div><div class="main-title"><h1>Residencial Primavera</h1></div><div class="button-area"></div></div>
+      <div class="sidebar"> <a href="https://samuelalmeidadev.com.br" target="_blank" class="main-logo"><img src="./main-logo.svg" height="35" /></a> <div class="menu-icon globe"><i class="fa-solid fa-earth-americas ion" data-intro='Para voltar à posição inicial, clique aqui.'></i></div> <div class="menu-icon"><a href="https://github.com/almeidiano/resi-map" target="_blank"><i class="fa-brands fa-github ion"></i></a></div> </div>
+      <div class="blockInfoSidebar"> <div class="sidebar-container"> <div class="blockInfo"> <div class="blockTitle"><h4 class="blockName high-emphasis"></h4></div> <div class="buildingCategory high-emphasis"><span></span></div> <hr style="opacity: 0.07;"/> <p class="high-emphasis"></p> </div> </div> </div>
     </div>
-    <div class="progress-area"></div>
-    <div class="sidebar">
-        <a href="https://samuelalmeidadev.com.br" target="_blank" class="main-logo"><img src="src/main-logo.svg" height="35" /></a>
-        <div class="menu-icon globe"><ion-icon data-intro='Para voltar à posição inicial, clique aqui.' class="ion" name="globe-outline"></ion-icon></div>
-        <div class="menu-icon"><a href="https://github.com/almeidiano/resi-map" target="_blank"><ion-icon class="github" name="logo-github"></ion-icon></a></div>
-    </div>
-    <div class="blockInfoSidebar">
-        <div class="sidebar-container">
-            <div class="blockInfo">
-                <div class="blockTitle"><h4 class="blockName high-emphasis"></h4></div>
-                <div class="buildingCategory high-emphasis"><span></span></div>
-                <hr style="opacity: 0.07;"/>
-                <p class="high-emphasis"></p>
-            </div>
-        </div>
-    </div>
-    <script type="module" src="dist/main.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
+    <script type="module" src="/src/assets/ts/main.ts"></script>
+  </body>
 </html>
