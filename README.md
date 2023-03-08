@@ -34,13 +34,13 @@ $ cd resi-map
 **Installing dependencies**
 
 ```
-$ yarn
-```
-
-_or_
-
-```
 $ npm install
+```
+
+then
+
+```
+$ npm run dev
 ```
 
 ## Built With
