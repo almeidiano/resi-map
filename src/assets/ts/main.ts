@@ -1,5 +1,5 @@
 // ThreeJS library import
-import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
+import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 
 // ThreeJS addons 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -61,6 +61,8 @@ loader.load( './resi_complete.gltf', function ( gltf: any ) {
     gltf.scene.quaternion._y = -0.5130005247426389;
     gltf.scene.quaternion._z = -0.5665943748293979;
 
+    //this keydown event is used to manipulate the cam at development 
+
     // document.addEventListener('keydown', (event) => {
     //     var code = event.code;
     
@@ -118,7 +120,7 @@ const labelRenderer = new CSS2DRenderer();
 labelRenderer.setSize(window.innerWidth, window.innerHeight);
 labelRenderer.domElement.style.position = "absolute";
 labelRenderer.domElement.style.top = "0px";
-labelRenderer.domElement.style.opacity = 0;
+labelRenderer.domElement.style.opacity = '0';
 document.body.appendChild(labelRenderer.domElement);
 
 var buildingList = [];
@@ -187,12 +189,6 @@ for(let i = 0; i < allBuildings.length; i++) {
             }
         }
     }
-}
-
-interface ILoading {
-    url: any,
-    itemsLoaded: number,
-    itemsTotal: number
 }
 
 // Loading bar
