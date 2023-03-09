@@ -22,7 +22,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // Vanilla project imports
 import {UI_Audio, Ions, Button, Version, SidebarInfo, PreLoader} from './classes'; 
-import allBuildings from './buildings';
+// import allBuildings from './buildings';
 import '../css/style.css';
 
 // ThreeJS object instantiation
@@ -124,72 +124,95 @@ labelRenderer.domElement.style.opacity = '0';
 document.body.appendChild(labelRenderer.domElement);
 
 var buildingList = [];
+var allBuildings = [];
 
-// For each building, it creates a label div
-for(let i = 0; i < allBuildings.length; i++) {
-    const building = document.createElement("i");
-    building.className = 'fa-regular fa-circle-dot';
-    
-    if (allBuildings[i].isBuilding) {
-        building.setAttribute('block', allBuildings[i].name);
-    } else {
-        building.setAttribute('buildingName', allBuildings[i].name);
-    }
+interface IBuilding {
+    camPositionX: number,
+    camPositionY: number,
+    camPositionZ: number,
+    camRotationX: number,
+    camRotationY: number,
+    camRotationZ: number,
+    camDurationPosition: number,
+    camDurationRotation: number,
+    isBuilding: boolean,
+    name: string,
+    desc: string,
+    x: number,
+    y: number
+}
 
-    // Passing all labels as a 2D renderer object, setting it position and adding to the scene
-    building.style.marginTop = "-1em";
-    let buildingObj = new CSS2DObject(building);
-    buildingObj.position.set(allBuildings[i].x,allBuildings[i].y,0);
-    scene.add(buildingObj);
-    buildingList.push(buildingObj);
+async function getBuildingJson() {
+    let req = await fetch('https://samuelalmeidadev.com.br/buildings.json');
+    let allBuildings: IBuilding[] = await req.json();
 
-    if(allBuildings[i].isBuilding) {
-        tippy(building, {
-            content: `Bloco ${allBuildings[i].name}`,
-            arrow: true,
-            placement: 'right'
-        });
-    }else{
-        tippy(building, {
-            content: allBuildings[i].name,
-            arrow: true,
-            placement: 'right'
-        });  
-    }
+    for(let i = 0; i < allBuildings.length; i++) {
+        const building = document.createElement("i");
+        building.className = 'fa-regular fa-circle-dot';
 
-    building.onmouseover = () => {
-        UI_Audio.hover('./hover.mp3');
-    }
-    
-    // On label click, go to building position and showing it respective info
-    building.onclick = () => {
-        Ions.setState = false;
-        UI_Audio.click('./click.mp3');
-        let blockTarget = building.getAttribute('block');
-        let buildingTarget = building.getAttribute('buildingName');
+        if (allBuildings[i].isBuilding) {
+            building.setAttribute('block', allBuildings[i].name);
+        } else {
+            building.setAttribute('buildingName', allBuildings[i].name);
+        }
 
-        if (buildingTarget) {
-            gsap.to(labelRenderer.domElement, {opacity: 0});
-            let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget));
-            const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
+        // Passing all labels as a 2D renderer object, setting it position and adding to the scene
+        building.style.marginTop = "-1em";
+        let buildingObj = new CSS2DObject(building);
+        buildingObj.position.set(allBuildings[i].x,allBuildings[i].y,0);
+        scene.add(buildingObj);
+        buildingList.push(buildingObj);
 
-            if(buildingInfo) {
-                gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
-            }
+        if(allBuildings[i].isBuilding) {
+            tippy(building, {
+                content: `Bloco ${allBuildings[i].name}`,
+                arrow: true,
+                placement: 'right'
+            });
+        }else{
+            tippy(building, {
+                content: allBuildings[i].name,
+                arrow: true,
+                placement: 'right'
+            });  
+        }
 
-        }else if(blockTarget) {
-            gsap.to(labelRenderer.domElement, {opacity: 0});
-            let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
-            const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
+        building.onmouseover = () => {
+            UI_Audio.hover('./hover.mp3');
+        }
+        
+        // On label click, go to building position and showing it respective info
+        building.onclick = () => {
+            Ions.setState = false;
+            UI_Audio.click('./click.mp3');
+            let blockTarget = building.getAttribute('block');
+            let buildingTarget = building.getAttribute('buildingName');
 
-            if(buildingInfo) {
-                gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
+            if (buildingTarget) {
+                gsap.to(labelRenderer.domElement, {opacity: 0});
+                let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget));
+                const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
+
+                if(buildingInfo) {
+                    gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
+                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
+                }
+
+            }else if(blockTarget) {
+                gsap.to(labelRenderer.domElement, {opacity: 0});
+                let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
+                const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
+
+                if(buildingInfo) {
+                    gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
+                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
+                }
             }
         }
     }
 }
+
+getBuildingJson();
 
 // Loading bar
 manager.onStart = function () {
