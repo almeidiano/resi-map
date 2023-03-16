@@ -237,7 +237,13 @@ manager.onLoad = function () {
             beginArea!.style.zIndex = "0";
             gsap.to(camera.position, {x: -0.1669697190710316, y: -0.9000058336272296, z: -0.9673878322917252, duration: 1.5, ease: "Power4.easeOut"});
             gsap.to(controls.target, {x: -0.16697400768532566, y: -0.8200056156476522, z: -1.0368304213606843, duration: 1.5, ease: "Power4.easeOut"});
-            gsap.to('canvas', {filter: "blur(0px)", onComplete(){introJs('.globe').start(), setZAxisToFixedPos.then((res) => {res.state = true}), gsap.to('.ion-app', {opacity: 1})}});
+            gsap.to('canvas', {filter: "blur(0px)", onComplete(){ 
+                introJs('.globe').start();
+                setZAxisToFixedPos.then((res: any) => {
+                    res.state = true;
+                });
+                gsap.to('.ion-app', {opacity: 1});
+            }});
         }, 250);
 
         document.querySelector('.blockInfo i')!.addEventListener('click', () => {
@@ -272,7 +278,7 @@ controls.mouseButtons = {
 }
 
 function animate() {
-    setZAxisToFixedPos.then(res => {
+    setZAxisToFixedPos.then((res: any) => {
         if(res.state) {
             camera.position.z = -0.9673878322917252;
             controls.target.z = -1.0368304213606843;   
