@@ -48,7 +48,7 @@ export class PreLoader {
     }
 
     static setLoader() {
-        return `<div class="progress deep-purple lighten-3" style="width: 350px"><div class="determinate deep-purple darken-1" style="width: ${this.newWidth}%"></div></div> <span>Carregando...</span>`
+        return `<div class="progress deep-purple lighten-3" style="width: 350px"><div class="indeterminate deep-purple darken-1"></div></div> <span>Carregando...</span>`
     }
 }
 

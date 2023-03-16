@@ -1,5 +1,5 @@
 // ThreeJS library import
-import { AmbientLight, LoadingManager, Color, Vector3, PerspectiveCamera, Scene, WebGLRenderer, MOUSE } from 'three';
+import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Scene, WebGLRenderer, MOUSE, TOUCH } from 'three';
 
 // ThreeJS addons 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -202,16 +202,6 @@ manager.onStart = function () {
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-manager.onProgress = function (url: any, itemsLoaded: number, itemsTotal: number ) {
-    let progressArea = document.querySelector('.progress-area');
-    progressArea!.innerHTML = PreLoader.setLoader(); 
-
-    if(itemsTotal > 5) {
-        const loadedItems = itemsLoaded/itemsTotal * 100;
-        PreLoader.newWidth = loadedItems; 
-        progressArea!.innerHTML = PreLoader.setLoader();
-    }
-};
 
 var setZAxisToFixedPos = new Promise((resolve) => {
     resolve({
@@ -221,13 +211,15 @@ var setZAxisToFixedPos = new Promise((resolve) => {
     })
 });
 
+let progressArea = document.querySelector('.progress-area');
+progressArea!.innerHTML = PreLoader.setLoader(); 
+
 manager.onLoad = function () {
     setTimeout(() => {
         document.querySelector<HTMLElement>('.progress-area')!.style.display = 'none';
         document.querySelector<HTMLElement>('.sidebar')!.style.display = 'block';
         gsap.to('canvas', {opacity: 1, duration: 2, ease: "power3.out"});
         gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area a', {opacity: 1, duration: 1})}})}});
-        let app = document.querySelector('body')!.lastChild;
     }, 1000);
 
     document.querySelector('.begin-area a')!.addEventListener('click', function() {
@@ -238,16 +230,15 @@ manager.onLoad = function () {
             gsap.to(camera.position, {x: -0.1669697190710316, y: -0.9000058336272296, z: -0.9673878322917252, duration: 1.5, ease: "Power4.easeOut"});
             gsap.to(controls.target, {x: -0.16697400768532566, y: -0.8200056156476522, z: -1.0368304213606843, duration: 1.5, ease: "Power4.easeOut"});
             gsap.to('canvas', {filter: "blur(0px)", onComplete(){ 
-                introJs('.globe').start();
                 setZAxisToFixedPos.then((res: any) => {
-                    res.state = true;
+                    res.state = true;   
                 });
                 gsap.to('.ion-app', {opacity: 1});
             }});
         }, 250);
 
         document.querySelector('.blockInfo i')!.addEventListener('click', () => {
-            gsap.to('.blockInfoSidebar', {width: '0px'})
+            gsap.to('.blockInfoSidebar', {width: '0px'});
         })
     })  
 };
@@ -277,6 +268,8 @@ controls.mouseButtons = {
     LEFT: MOUSE.PAN
 }
 
+controls.touches.ONE = TOUCH.PAN;
+ 
 function animate() {
     setZAxisToFixedPos.then((res: any) => {
         if(res.state) {
