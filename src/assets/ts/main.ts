@@ -1,5 +1,5 @@
 // ThreeJS library import
-import { AmbientLight, LoadingManager, Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { AmbientLight, LoadingManager, Color, Vector3, PerspectiveCamera, Scene, WebGLRenderer, MOUSE } from 'three';
 
 // ThreeJS addons 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -22,7 +22,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // Vanilla project imports
 import {UI_Audio, Ions, Button, Version, SidebarInfo, PreLoader} from './classes'; 
-// import allBuildings from './buildings';
 import '../css/style.css';
 
 // ThreeJS object instantiation
@@ -31,19 +30,13 @@ const loader = new GLTFLoader(manager);
 const scene = new Scene();
 const light = new AmbientLight();
 const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-const renderer = new WebGLRenderer({antialias: true, alpha: true});
-
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
 
 // Setting initial cam pos & light 
 camera.position.set(0, 0, 1.2700000000000002);
+// camera.up.set(1,1,1);
 light.intensity = 1.50;
 scene.add(light);
 
-// Enabling orbit controls to future changes 
-const controls = new OrbitControls( camera, renderer.domElement );
-controls.update();
 Button.render('Começar');
 Version.display();
 
@@ -63,65 +56,58 @@ loader.load( './resi_complete.gltf', function ( gltf: any ) {
 
     //this keydown event is used to manipulate the cam at development 
 
-    // document.addEventListener('keydown', (event) => {
-    //     var code = event.code;
+    document.addEventListener('keydown', (event) => {
+        var code = event.code;
     
-    //     switch (code) {
-    //         // pos
-    //         case 'ArrowUp':
-    //             camera.position.y += 0.01;
-    //         break;
-    //         case 'ArrowDown':
-    //             camera.position.y -= 0.01;
-    //         break;
-    //         case 'ArrowLeft':
-    //             camera.position.x -= 0.01;
-    //         break;
-    //         case 'ArrowRight':
-    //             camera.position.x += 0.01;
-    //         break;
-    //         case 'KeyS':
-    //             camera.position.z -= 0.01;
-    //         break;
-    //         case 'KeyW':
-    //             camera.position.z += 0.01;
-    //         break;
+        // switch (code) {
+        //     // pos
+        //     case 'ArrowUp':
+        //         controls.target.y += 0.01;
+        //     break;
+        //     case 'ArrowDown':
+        //         controls.target.y -= 0.01;
+        //     break;
+        //     case 'ArrowLeft':
+        //         controls.target.x -= 0.01;
+        //     break;
+        //     case 'ArrowRight':
+        //         controls.target.x += 0.01;
+        //     break;
+        //     case 'KeyS':
+        //         controls.target.z -= 0.01;
+        //     break;
+        //     case 'KeyW':
+        //         controls.target.z += 0.01;
+        //     break;
 
-    //         //rotation
-    //         case 'KeyI':
-    //             camera.rotation.y += 0.01;
-    //         break;
-    //         case 'KeyK':
-    //             camera.rotation.y -= 0.01;
-    //         break;
-    //         case 'KeyJ':
-    //             camera.rotation.x -= 0.01;
-    //         break;
-    //         case 'KeyL':
-    //             camera.rotation.x += 0.01;
-    //         break;
-    //         case 'KeyQ':
-    //             camera.rotation.z -= 0.01;
-    //         break;
-    //         case 'KeyE':
-    //             camera.rotation.z += 0.01;
-    //         break;
-    //     }
+        //     //rotation
+        //     case 'KeyI':
+        //         camera.position.y += 0.01;
+        //     break;
+        //     case 'KeyK':
+        //         camera.position.y -= 0.01;
+        //     break;
+        //     case 'KeyJ':
+        //         camera.position.x -= 0.01;
+        //     break;
+        //     case 'KeyL':
+        //         camera.position.x += 0.01;
+        //     break;
+        //     case 'KeyQ':
+        //         camera.position.z -= 0.01;
+        //     break;
+        //     case 'KeyE':
+        //         camera.position.z += 0.01;
+        //     break;
+        // }
     
-    //     console.log(camera);
-    // }, false);
+        // console.log(camera);
+        // console.log(controls);
+    }, false);
 
 }, undefined, function ( error: any ) {
 	console.error( error );
 } );
-
-// Creating 2D renderer
-const labelRenderer = new CSS2DRenderer();
-labelRenderer.setSize(window.innerWidth, window.innerHeight);
-labelRenderer.domElement.style.position = "absolute";
-labelRenderer.domElement.style.top = "0px";
-labelRenderer.domElement.style.opacity = '0';
-document.body.appendChild(labelRenderer.domElement);
 
 var buildingList = [];
 var allBuildings = [];
@@ -139,11 +125,12 @@ interface IBuilding {
     name: string,
     desc: string,
     x: number,
-    y: number
+    y: number,
+    z: number
 }
 
 async function getBuildingJson() {
-    let req = await fetch('https://samuelalmeidadev.com.br/buildings.json');
+    let req = await fetch('./buildings.json');
     let allBuildings: IBuilding[] = await req.json();
 
     for(let i = 0; i < allBuildings.length; i++) {
@@ -156,12 +143,11 @@ async function getBuildingJson() {
             building.setAttribute('buildingName', allBuildings[i].name);
         }
 
-        // Passing all labels as a 2D renderer object, setting it position and adding to the scene
+        // Passing all labels as a 2D renderer object, setting it position and adding to the scene// Passing all labels as a 2D renderer object, setting it position and adding to the scene
         building.style.marginTop = "-1em";
         let buildingObj = new CSS2DObject(building);
-        buildingObj.position.set(allBuildings[i].x,allBuildings[i].y,0);
+        buildingObj.position.set(allBuildings[i].x,allBuildings[i].y, allBuildings[i].z);
         scene.add(buildingObj);
-        buildingList.push(buildingObj);
 
         if(allBuildings[i].isBuilding) {
             tippy(building, {
@@ -177,36 +163,28 @@ async function getBuildingJson() {
             });  
         }
 
-        building.onmouseover = () => {
+        building.onpointerover = () => {
             UI_Audio.hover('./hover.mp3');
         }
-        
+
+        building.onpointerup = () => controls.enabled = true;
+
         // On label click, go to building position and showing it respective info
-        building.onclick = () => {
-            Ions.setState = false;
+        building.onpointerdown = () => {
+            // Ions.setState = false;
+            controls.enabled = false;
             UI_Audio.click('./click.mp3');
             let blockTarget = building.getAttribute('block');
             let buildingTarget = building.getAttribute('buildingName');
 
             if (buildingTarget) {
-                gsap.to(labelRenderer.domElement, {opacity: 0});
                 let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(buildingTarget));
                 const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
-
-                if(buildingInfo) {
-                    gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
-                }
-
+                sidebarInfo.render();
             }else if(blockTarget) {
-                gsap.to(labelRenderer.domElement, {opacity: 0});
                 let buildingInfo = allBuildings.filter(obj => Object.values(obj).includes(blockTarget))
                 const sidebarInfo = new SidebarInfo(buildingInfo[0].name, buildingInfo[0].desc, buildingInfo[0].isBuilding);
-
-                if(buildingInfo) {
-                    gsap.to(camera.position, {x: buildingInfo[0].camPositionX, y: buildingInfo[0].camPositionY, z: buildingInfo[0].camPositionZ, duration: buildingInfo[0].camDurationPosition, ease: "Power4.easeInOut"})
-                    gsap.to(camera.rotation, {x: buildingInfo[0].camRotationX, y: buildingInfo[0].camRotationY, z: buildingInfo[0].camRotationZ, duration: buildingInfo[0].camDurationRotation, ease: "Power4.easeInOut", onComplete(){sidebarInfo.render(), Ions.setState = true}})
-                }
+                sidebarInfo.render();
             }
         }
     }
@@ -235,12 +213,21 @@ manager.onProgress = function (url: any, itemsLoaded: number, itemsTotal: number
     }
 };
 
-manager.onLoad = function ( ) {
+var setZAxisToFixedPos = new Promise((resolve) => {
+    resolve({
+        cameraPositionZ: -0.9673878322917252,
+        controlsTargetZ: -1.0368304213606843,
+        state: false
+    })
+});
+
+manager.onLoad = function () {
     setTimeout(() => {
         document.querySelector<HTMLElement>('.progress-area')!.style.display = 'none';
         document.querySelector<HTMLElement>('.sidebar')!.style.display = 'block';
         gsap.to('canvas', {opacity: 1, duration: 2, ease: "power3.out"});
         gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area a', {opacity: 1, duration: 1})}})}});
+        let app = document.querySelector('body')!.lastChild;
     }, 1000);
 
     document.querySelector('.begin-area a')!.addEventListener('click', function() {
@@ -248,22 +235,54 @@ manager.onLoad = function ( ) {
             let beginArea = document.querySelector<HTMLElement>('.begin-area');
             beginArea!.style.opacity = "0";
             beginArea!.style.zIndex = "0";
-            gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
-            gsap.to('canvas', {filter: "blur(0px)", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1, duration: 1, onComplete(){introJs('.globe').start()}})}});
+            gsap.to(camera.position, {x: -0.1669697190710316, y: -0.9000058336272296, z: -0.9673878322917252, duration: 1.5, ease: "Power4.easeOut"});
+            gsap.to(controls.target, {x: -0.16697400768532566, y: -0.8200056156476522, z: -1.0368304213606843, duration: 1.5, ease: "Power4.easeOut"});
+            gsap.to('canvas', {filter: "blur(0px)", onComplete(){introJs('.globe').start(), setZAxisToFixedPos.then((res) => {res.state = true}), gsap.to('.ion-app', {opacity: 1})}});
         }, 250);
 
-        document.querySelector('.ion')!.addEventListener('click', () => {
+        document.querySelector('.blockInfo i')!.addEventListener('click', () => {
             gsap.to('.blockInfoSidebar', {width: '0px'})
-            gsap.to(camera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
-            gsap.to(camera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
         })
     })  
 };
 
+const renderer = new WebGLRenderer({antialias: true, alpha: true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild( renderer.domElement );
+
+// Creating 2D renderer
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = "absolute";
+labelRenderer.domElement.style.top = "0px";
+labelRenderer.domElement.className = 'ion-app';
+document.body.appendChild(labelRenderer.domElement);
+
+// Orbit controls config 
+const controls = new OrbitControls( camera, labelRenderer.domElement );
+controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+controls.dampingFactor = 0.05;
+
+controls.enableZoom = false;
+controls.enableRotate = true;
+controls.panSpeed = 5;
+
+controls.mouseButtons = {
+    LEFT: MOUSE.PAN
+}
+
 function animate() {
+    setZAxisToFixedPos.then(res => {
+        if(res.state) {
+            camera.position.z = -0.9673878322917252;
+            controls.target.z = -1.0368304213606843;   
+        }
+    })
+
     window.requestAnimationFrame(animate);
     renderer.render( scene, camera );
     labelRenderer.render(scene, camera);
+    controls.update();
 }
 
 function resize() {

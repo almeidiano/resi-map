@@ -149,6 +149,7 @@ canvas{
     color: var(--primary-white);
     bottom: 0;
     right: 0;
+    z-index: 999;
 }
 .github {
     color: var(--secondary-white); 
@@ -158,6 +159,19 @@ canvas{
 .menu-icon a{
     display: flex;
     justify-content: center;
+}
+.ion-app {
+    opacity: 0;
+    transition: .5s;
+}
+.blockTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.blockTitle i {
+    font-size: 30px;
+    color: var(--primary-white);
 }
 @media (max-width: 768px) {
     .main-title h1 {
