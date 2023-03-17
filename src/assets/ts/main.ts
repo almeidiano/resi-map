@@ -235,11 +235,10 @@ manager.onLoad = function () {
                 });
                 gsap.to('.ion-app', {opacity: 1});
             }});
+            controls.enabled = true;
         }, 250);
 
-        document.querySelector('.blockInfo i')!.addEventListener('click', () => {
-            gsap.to('.blockInfoSidebar', {width: '0px'});
-        })
+        SidebarInfo.closeSidebar(controls);
     })  
 };
 
@@ -259,9 +258,11 @@ document.body.appendChild(labelRenderer.domElement);
 const controls = new OrbitControls( camera, labelRenderer.domElement );
 controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
 controls.dampingFactor = 0.05;
+controls.maxAzimuthAngle = 0.02;
 
 controls.enableZoom = false;
-controls.enableRotate = true;
+controls.enableRotate = false;
+controls.enabled = false;
 controls.panSpeed = 5;
 
 controls.mouseButtons = {

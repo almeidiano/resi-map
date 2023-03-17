@@ -11,23 +11,6 @@ a{
     --primary-activated: #3880ff;
 }
 
-/* ion-icon:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-} */
-
-@keyframes ionLabel {
-    0% {
-        color: #FFF;
-    } 
-    100% {
-        color: var(--primary-activated)
-    }
-}
-
 .high-emphasis{
     opacity: 87% !important;
 }
@@ -36,9 +19,6 @@ h1,h2,h3,h4,h5{
     margin: 0;
     padding: 0;
     color: var(--primary-white);
-}
-.buildingCategory span{
-    color: var(--secondary-white);
 }
 
 body { margin: 0; font-family: 'Poppins', sans-serif; }
@@ -51,14 +31,6 @@ canvas{width: 100%; height: 100%;}
     z-index: 999;
     display: none;
 }
-.blockInfoSidebar {
-    width: 0px;
-    height: 100%;
-    position: fixed;
-    right: 0;
-    overflow: hidden;
-    z-index: 999;
-}
 .main-logo{
     padding: 10px 0px;
     display: flex;
@@ -69,19 +41,7 @@ canvas{width: 100%; height: 100%;}
     margin: auto;
     padding: 20px 0px;
 }
-.blockInfo p{
-    font-size: 14px;
-    color: var(--secondary-white);
-    white-space: normal;
-    width: 315px;
-}
-.blockInfo{
-    white-space: nowrap;
-}
-.blockName {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+
 html{
     background-color: #181a1b !important;
 }
@@ -164,6 +124,35 @@ canvas{
     opacity: 0;
     transition: .5s;
 }
+
+/* Building Information */
+
+.blockInfoSidebar {
+    width: 350px;
+    height: 100%;
+    position: fixed;
+    right: -350px;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.blockInfo p{
+    font-size: 14px;
+    color: var(--secondary-white);
+    white-space: normal;
+    height: 350px;
+    overflow: auto;
+    line-break: unset;
+}
+.blockName {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.buildingCategory span{
+    color: var(--secondary-white);
+}
+
 .blockTitle {
     display: flex;
     justify-content: space-between;
@@ -172,7 +161,44 @@ canvas{
 .blockTitle i {
     font-size: 30px;
     color: var(--primary-white);
+    cursor: pointer;
 }
+
+/* Building label */
+
+@keyframes ionLabel {
+    0% {
+        color: #FFF;
+    } 
+    100% {
+        color: var(--primary-activated)
+    }
+}
+
+.fa-circle-dot:before, .fa-dot-circle:before {
+    color: var(--primary-white);
+    animation: ionLabel 2s ease-in-out infinite alternate;
+    cursor: pointer;
+}
+
+.fa-circle-dot:hover::before {
+    color: var(--primary-activated) !important;
+}
+
+/* Building description scrollbar */
+
+.blockInfo p::-webkit-scrollbar {
+    width: 5px;
+}
+
+.blockInfo p::-webkit-scrollbar-track {
+    background: #5e35b1 !important;
+}
+
+.blockInfo p::-webkit-scrollbar-thumb {
+    background-color: #b39ddb !important;
+}
+
 @media (max-width: 768px) {
     .main-title h1 {
         font-size: xx-large;
@@ -203,14 +229,4 @@ canvas{
     .main-title h1 {
         font-size: x-large;
     }
-}
-
-.fa-circle-dot:before, .fa-dot-circle:before {
-    color: var(--primary-white);
-    animation: ionLabel 2s ease-in-out infinite alternate;
-    cursor: pointer;
-}
-
-.fa-circle-dot:hover::before {
-    color: var(--primary-activated) !important;
 }

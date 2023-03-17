@@ -1,3 +1,4 @@
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import gsap from 'gsap';
 import * as packageInfo from '../../../package.json';
 
@@ -78,16 +79,15 @@ export class SidebarInfo implements ISidebarInfo {
         document.querySelector<HTMLElement>('.blockName')!.innerText = this.buildingName;
         document.querySelector<HTMLElement>('.buildingCategory span')!.innerText = this.category;
         document.querySelector('.blockInfo p')!.innerHTML = this.buildingDesc;
-        window.screen.width <= 425 ? gsap.to('.blockInfoSidebar', {width: '100%'}) : gsap.to('.blockInfoSidebar', {width: '350px'});
+        window.screen.width <= 425 ? gsap.to('.blockInfoSidebar', {width: '100%', right: '0'}) : gsap.to('.blockInfoSidebar', {right: '0px'});
     }
 
-    // closeSidebar(threeJSCamera, labelRenderer) {
-    //     document.querySelector('.ion')!.addEventListener('click', () => {
-    //         gsap.to('.blockInfoSidebar', {width: '0px'})
-    //         gsap.to(threeJSCamera.position, {x: 0, y: 0, z: 1, duration: 1.5, ease: "Power4.easeOut"})
-    //         gsap.to(threeJSCamera.rotation, {x: 0, y: 0, z: 0, duration: 1.5, ease: "Power4.easeOut", onComplete(){gsap.to(labelRenderer.domElement, {opacity: 1})}})
-    //     })
-    // }
+    static closeSidebar(controls: OrbitControls) {
+        document.querySelector('.blockInfo i')!.addEventListener('click', () => {
+            gsap.to('.blockInfoSidebar', {right: '-400px'});
+            controls.enabled = true;
+        })
+    }
 }
 
 export class Version {
