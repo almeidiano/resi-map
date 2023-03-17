@@ -84,7 +84,7 @@ export class SidebarInfo implements ISidebarInfo {
 
     static closeSidebar(controls: OrbitControls) {
         document.querySelector('.blockInfo i')!.addEventListener('click', () => {
-            gsap.to('.blockInfoSidebar', {right: '-400px'});
+            gsap.to('.blockInfoSidebar', {right: '-1000px'});
             controls.enabled = true;
         })
     }

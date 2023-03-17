@@ -131,7 +131,7 @@ canvas{
     width: 350px;
     height: 100%;
     position: fixed;
-    right: -350px;
+    right: -1000px;
     overflow: hidden;
     z-index: 999;
 }

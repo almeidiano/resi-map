@@ -20,8 +20,8 @@ import 'tippy.js/dist/tippy.css';
 import 'intro.js/minified/introjs.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-// Vanilla project imports
-import {UI_Audio, Ions, Button, Version, SidebarInfo, PreLoader} from './classes'; 
+// Vanilla imports
+import {UI_Audio, Button, Version, SidebarInfo, PreLoader} from './classes'; 
 import '../css/style.css';
 
 // ThreeJS object instantiation
@@ -31,14 +31,14 @@ const scene = new Scene();
 const light = new AmbientLight();
 const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-// Setting initial cam pos & light 
-camera.position.set(0, 0, 1.2700000000000002);
-// camera.up.set(1,1,1);
-light.intensity = 1.50;
-scene.add(light);
-
+// Vanilla instantiation
 Button.render('Começar');
 Version.display();
+
+// Setting initial cam pos & light then, adding to the main scene
+camera.position.set(0, 0, 1.2700000000000002);
+light.intensity = 1.50;
+scene.add(light);
 
 // Loading 3D file and setting it's position
 loader.load( './resi_complete.gltf', function ( gltf: any ) {
@@ -54,63 +54,9 @@ loader.load( './resi_complete.gltf', function ( gltf: any ) {
     gltf.scene.quaternion._y = -0.5130005247426389;
     gltf.scene.quaternion._z = -0.5665943748293979;
 
-    //this keydown event is used to manipulate the cam at development 
-
-    document.addEventListener('keydown', (event) => {
-        var code = event.code;
-    
-        // switch (code) {
-        //     // pos
-        //     case 'ArrowUp':
-        //         controls.target.y += 0.01;
-        //     break;
-        //     case 'ArrowDown':
-        //         controls.target.y -= 0.01;
-        //     break;
-        //     case 'ArrowLeft':
-        //         controls.target.x -= 0.01;
-        //     break;
-        //     case 'ArrowRight':
-        //         controls.target.x += 0.01;
-        //     break;
-        //     case 'KeyS':
-        //         controls.target.z -= 0.01;
-        //     break;
-        //     case 'KeyW':
-        //         controls.target.z += 0.01;
-        //     break;
-
-        //     //rotation
-        //     case 'KeyI':
-        //         camera.position.y += 0.01;
-        //     break;
-        //     case 'KeyK':
-        //         camera.position.y -= 0.01;
-        //     break;
-        //     case 'KeyJ':
-        //         camera.position.x -= 0.01;
-        //     break;
-        //     case 'KeyL':
-        //         camera.position.x += 0.01;
-        //     break;
-        //     case 'KeyQ':
-        //         camera.position.z -= 0.01;
-        //     break;
-        //     case 'KeyE':
-        //         camera.position.z += 0.01;
-        //     break;
-        // }
-    
-        // console.log(camera);
-        // console.log(controls);
-    }, false);
-
 }, undefined, function ( error: any ) {
 	console.error( error );
 } );
-
-var buildingList = [];
-var allBuildings = [];
 
 interface IBuilding {
     camPositionX: number,
@@ -143,35 +89,40 @@ async function getBuildingJson() {
             building.setAttribute('buildingName', allBuildings[i].name);
         }
 
-        // Passing all labels as a 2D renderer object, setting it position and adding to the scene// Passing all labels as a 2D renderer object, setting it position and adding to the scene
+        // Passing all labels as a 2D renderer object, setting it position and adding to the main scene
         building.style.marginTop = "-1em";
         let buildingObj = new CSS2DObject(building);
         buildingObj.position.set(allBuildings[i].x,allBuildings[i].y, allBuildings[i].z);
         scene.add(buildingObj);
 
-        if(allBuildings[i].isBuilding) {
-            tippy(building, {
-                content: `Bloco ${allBuildings[i].name}`,
-                arrow: true,
-                placement: 'right'
-            });
-        }else{
-            tippy(building, {
-                content: allBuildings[i].name,
-                arrow: true,
-                placement: 'right'
-            });  
-        }
-
+        // On pointer hover, if the current device supposedly isn't a mobile, then...
         building.onpointerover = () => {
-            UI_Audio.hover('./hover.mp3');
+            if(window.screen.width > 425) {
+                if(allBuildings[i].isBuilding) {
+                    tippy(building, {
+                        content: `Bloco ${allBuildings[i].name}`,
+                        arrow: true,
+                        hideOnClick: true,
+                        placement: 'right'
+                    });
+                }else{
+                    tippy(building, {
+                        content: allBuildings[i].name,
+                        arrow: true,
+                        hideOnClick: true,
+                        placement: 'right'
+                    });  
+                }
+
+                UI_Audio.hover('./hover.mp3');
+            }
         }
 
+        // If the user "escapes" the current mouse/touch
         building.onpointerup = () => controls.enabled = true;
 
         // On label click, go to building position and showing it respective info
         building.onpointerdown = () => {
-            // Ions.setState = false;
             controls.enabled = false;
             UI_Audio.click('./click.mp3');
             let blockTarget = building.getAttribute('block');
@@ -192,17 +143,13 @@ async function getBuildingJson() {
 
 getBuildingJson();
 
-// Loading bar
+// Summoning ThreeJS Loading bar with my PreLoader Class 
 manager.onStart = function () {
     let progressArea = document.querySelector('.progress-area');
     progressArea!.innerHTML = PreLoader.setLoader(); 
 };
 
-// ignoring the unused url parameter
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-
+// Promise that will keep the 3D Z axis values fixed
 var setZAxisToFixedPos = new Promise((resolve) => {
     resolve({
         cameraPositionZ: -0.9673878322917252,
@@ -211,10 +158,13 @@ var setZAxisToFixedPos = new Promise((resolve) => {
     })
 });
 
+// Adding inderteminated loading at begining 
 let progressArea = document.querySelector('.progress-area');
 progressArea!.innerHTML = PreLoader.setLoader(); 
 
+// Summoning ThreeJS onload func 
 manager.onLoad = function () {
+    // Welcome begin screen manipulated via GSAP
     setTimeout(() => {
         document.querySelector<HTMLElement>('.progress-area')!.style.display = 'none';
         document.querySelector<HTMLElement>('.sidebar')!.style.display = 'block';
@@ -222,6 +172,7 @@ manager.onLoad = function () {
         gsap.to('.title-discover', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.main-title h1', {opacity: 1, y: 0, duration: 1, ease: "power3.out", onComplete(){gsap.to('.begin-area a', {opacity: 1, duration: 1})}})}});
     }, 1000);
 
+    // Events that will occur after the main button pressed
     document.querySelector('.begin-area a')!.addEventListener('click', function() {
         setTimeout(() => {
             let beginArea = document.querySelector<HTMLElement>('.begin-area');
@@ -242,6 +193,7 @@ manager.onLoad = function () {
     })  
 };
 
+// Creating WebGL renderer
 const renderer = new WebGLRenderer({antialias: true, alpha: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild( renderer.domElement );
@@ -260,6 +212,8 @@ controls.enableDamping = true; // an animation loop is required when either damp
 controls.dampingFactor = 0.05;
 controls.maxAzimuthAngle = 0.02;
 
+controls.touches.ONE = TOUCH.PAN;
+
 controls.enableZoom = false;
 controls.enableRotate = false;
 controls.enabled = false;
@@ -268,10 +222,9 @@ controls.panSpeed = 5;
 controls.mouseButtons = {
     LEFT: MOUSE.PAN
 }
-
-controls.touches.ONE = TOUCH.PAN;
  
 function animate() {
+    // If the promise is true, keep the 3D Z axies locked
     setZAxisToFixedPos.then((res: any) => {
         if(res.state) {
             camera.position.z = -0.9673878322917252;
