@@ -1,7 +1,7 @@
 {
   "name": "resi-map",
   "private": true,
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Explore the Residencial Primavera 1 through an interactive map",
   "type": "module",
   "scripts": {

@@ -11,7 +11,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 // JS
 import gsap from 'gsap';
 import tippy from 'tippy.js';
-import introJs from 'intro.js';
+// import introJs from 'intro.js';
 
 // CSS
 import 'materialize-css/dist/css/materialize.min.css';
@@ -41,18 +41,68 @@ light.intensity = 1.50;
 scene.add(light);
 
 // Loading 3D file and setting it's position
-loader.load( './resi_complete.gltf', function ( gltf: any ) {
+loader.load( './resi-map.gltf', function ( gltf: any ) {
     scene.background = new Color( 0x71BCE1 );
     scene.add( gltf.scene );
 
-    gltf.scene.position.x = -2.99999999999998;
-    gltf.scene.position.y = 1.7600000000000016;
-    gltf.scene.position.z = -1.740000000000001;
+    gltf.scene.position.x = -15.71999999999971;
+    gltf.scene.position.y = -2.9399999999999817;
+    gltf.scene.position.z = -2.179999999999998;
 
     gltf.scene.quaternion._w = 0.43279318769409064;
     gltf.scene.quaternion._x = 0.4780076701383027;
     gltf.scene.quaternion._y = -0.5130005247426389;
     gltf.scene.quaternion._z = -0.5665943748293979;
+
+    //this keydown event is used to manipulate the cam at development 
+
+    document.addEventListener('keydown', (event) => {
+        var code = event.code;
+    
+        switch (code) {
+            // pos
+            case 'ArrowUp':
+                gltf.scene.position.y += 0.01;
+            break;
+            case 'ArrowDown':
+                gltf.scene.position.y -= 0.01;
+            break;
+            case 'ArrowLeft':
+                gltf.scene.position.x -= 0.01;
+            break;
+            case 'ArrowRight':
+                gltf.scene.position.x += 0.01;
+            break;
+            case 'KeyS':
+                gltf.scene.position.z -= 0.01;
+            break;
+            case 'KeyW':
+                gltf.scene.position.z += 0.01;
+            break;
+
+            //rotation
+            // case 'KeyI':
+            //     camera.position.y += 0.01;
+            // break;
+            // case 'KeyK':
+            //     camera.position.y -= 0.01;
+            // break;
+            // case 'KeyJ':
+            //     camera.position.x -= 0.01;
+            // break;
+            // case 'KeyL':
+            //     camera.position.x += 0.01;
+            // break;
+            // case 'KeyQ':
+            //     camera.position.z -= 0.01;
+            // break;
+            // case 'KeyE':
+            //     camera.position.z += 0.01;
+            // break;
+        }
+    
+        console.log(gltf.scene.position);
+    }, false);
 
 }, undefined, function ( error: any ) {
 	console.error( error );
@@ -178,8 +228,8 @@ manager.onLoad = function () {
             let beginArea = document.querySelector<HTMLElement>('.begin-area');
             beginArea!.style.opacity = "0";
             beginArea!.style.zIndex = "0";
-            gsap.to(camera.position, {x: -0.1669697190710316, y: -0.9000058336272296, z: -0.9673878322917252, duration: 1.5, ease: "Power4.easeOut"});
-            gsap.to(controls.target, {x: -0.16697400768532566, y: -0.8200056156476522, z: -1.0368304213606843, duration: 1.5, ease: "Power4.easeOut"});
+            gsap.to(camera.position, {x: -0.15998024481168774, y: -0.8719081755513448, z: -1.0047028585208952, duration: 1.5, ease: "Power4.easeOut"});
+            gsap.to(controls.target, {x: -0.15998250416709764, y: -0.8264040797888191, z: -1.0442015876038386, duration: 1.5, ease: "Power4.easeOut"});
             gsap.to('canvas', {filter: "blur(0px)", onComplete(){ 
                 setZAxisToFixedPos.then((res: any) => {
                     res.state = true;   
@@ -217,7 +267,7 @@ controls.touches.ONE = TOUCH.PAN;
 controls.enableZoom = false;
 controls.enableRotate = false;
 controls.enabled = false;
-controls.panSpeed = 5;
+controls.panSpeed = 3.5;
 
 controls.mouseButtons = {
     LEFT: MOUSE.PAN
@@ -227,8 +277,8 @@ function animate() {
     // If the promise is true, keep the 3D Z axies locked
     setZAxisToFixedPos.then((res: any) => {
         if(res.state) {
-            camera.position.z = -0.9673878322917252;
-            controls.target.z = -1.0368304213606843;   
+            camera.position.z = -1.0047028585208952;
+            controls.target.z = -1.0442015876038386;  
         }
     })
 
@@ -236,6 +286,9 @@ function animate() {
     renderer.render( scene, camera );
     labelRenderer.render(scene, camera);
     controls.update();
+
+    // console.log(camera.position);
+    // console.log(controls.target);
 }
 
 function resize() {
